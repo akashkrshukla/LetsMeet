@@ -1,0 +1,293 @@
+{% extends "ixmeetbase.html" %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-md-6">
+					<h4 style="margin-top: 8px;">{{ user.first_name }}</h4></div>
+				<div class="col-md-6"></div>
+			</div>
+			<div class="row">
+				<div class="col-xl-4">
+					<div class="card mb-3">
+						<div class="card-header"><i class="fas fa-user-alt"></i> Profile Details</div>
+						<div class="card-body profile-detail">
+							<div class="recruiter-pp mb-3">
+{#                                {% if user.profilepicture == "" %}#}
+                                    <img src="{%static 'assets/img/avatar.jpg' %}" alt="">
+{#                                {% else %}#}
+{#                                    <img src="{%static  user.profilepicture  %}" alt="" />#}
+{#                                {% endif %}#}
+                                <div class="recruiter-pp-ub">
+                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#exampleModalCenter">
+                                        Change Profile Picture
+                                    </a>
+                                </div>
+								<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered" role="document">
+										<form action="/user/upload_profile_pic/" method="post" enctype="multipart/form-data" class="modal-content">
+											{% csrf_token %}
+                                            <div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLongTitle">Upload New Profile Pic</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+											</div>
+											<div class="modal-body">
+												<div class="custom-file">
+													<input name="profile_pic" type="file" class="custom-file-input" id="inputGroupFile04">
+													<label class="custom-file-label" for="inputGroupFile04">Upload New Profile Pic</label>
+												</div>
+											</div>
+											<div class="modal-footer" style="display: block;">
+												<button type="submit" class="btn btn-primary float-right" >Save changes</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							<h5>{{ user.first_name }}</h5> <small>Member since <strong>20/10/1015</strong></small>
+							<br>
+							<h5>Info</h5>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.</p>
+							<div class="row pro-info">
+								<div class="col-xl-4"><a href="#"><i class="fas fa-chart-area text-info"></i><br>
+						<strong>28</strong> <small>Interviews Created</small></a> </div>
+								<div class="col-xl-4"><a href="javascript:void(0)" id="joblistrecruiter"><i class="fas fa-briefcase text-info"></i><br>
+						<strong>28</strong> <small>Jobs Assigned</small></a> </div>
+								<div class="col-xl-4"><a href="tasks.html"><i class="fas fa-tasks text-info"></i><br>
+						<strong>28</strong> <small>Tasks left</small></a> </div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<button type="button" class="btn btn-info btn-block" id="editprofile">Edit Profile</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-8">
+					<div class="card form-edit-recruiter-profile" style="display: none; height: 800px;">
+						<div class="card-header">
+							<h4>Edit Profile</h4> </div>
+						<form action="/user/save_profile/" method="post" class="card-body col-xl-6">
+							<div class="form-group mt-2">
+								<label>Name</label>
+								<input name="name" type="text" class="form-control" aria-describedby="companyhelp"
+                                       value="{{ user.first_name}} {{ user.last_name }}">
+                            </div>
+							<div class="form-group mt-2">
+								<label>Email</label>
+								<input name="email" type="text" class="form-control" aria-describedby="companyhelp"
+                                       value="{{ user.email }}">
+                            </div>
+							<div class="form-group mt-2">
+								<label>Description</label>
+								<textarea name="description" class="form-control" style="height: 200px" aria-describedby="companyhelp"
+                                          placeholder="{{ user.description }}"></textarea>
+							</div>
+							<div class="form-group mt-2">
+								<a class="btn btn-dark" id="epcancel">Cancel</a>
+                                    {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Update</button>
+							</div>
+						</form>
+					</div>
+					<div class="card" id="activities">
+						<div class="card-header">
+							<h4>Activities</h4></div>
+						<div class="card-body">
+							<div class="activity">
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> created job <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> created Interview <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> joined as <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> joined as <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> joined as <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> joined as <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> joined as <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> joined as <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> joined as <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+								<div class="feed">
+									<a href="#"><img src="assets/img/profile.jpg" alt=""></a>
+									<div class="feed-content"><strong>Manish Gupta</strong> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Over the years, sometimes by accident, sometimes on purpose (injected humour and the like). <a href="#">System Admin</a>.
+										<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+							</div>
+						</div>
+					</div>
+					<div class="card assiggedjoblist">
+						<div class="card-header">
+							<h4>Job Assigned</h4> </div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered" width="100%" cellspacing="0">
+									<thead class="table-dark">
+										<tr>
+											<th class="chholder">
+												<input type="checkbox">
+											</th>
+											<th>Job Title</th>
+											<th>Department</th>
+											<th>Openings</th>
+											<th>Location</th>
+											<th>Description</th>
+											<th>Assigned By</th>
+											<th>Created Date</th>
+										</tr>
+									</thead>
+									<tfoot class="table-dark">
+										<tr>
+											<th>
+												<input type="checkbox">
+											</th>
+											<th>Job Title</th>
+											<th>Department</th>
+											<th>Openings</th>
+											<th>Location</th>
+											<th>Description</th>
+											<th>Assigned By</th>
+											<th>Created Date</th>
+										</tr>
+									</tfoot>
+									<tbody>
+										<tr>
+											<td>
+												<input type="checkbox">
+											</td>
+											<td><a href="ui-designer.html">Marketing Exec.</a></td>
+											<td><a href="department.html">Marketing</a></td>
+											<td>10</td>
+											<td>Gurugram</td>
+											<td>Lorem Ipsum is simply dummy text....</td>
+											<td>Manish Gupta</td>
+											<td>22/06/2020</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox">
+											</td>
+											<td><a href="ui-designer.html">Php Developer</a></td>
+											<td><a href="department.html">Development</a></td>
+											<td>10</td>
+											<td>Gurugram</td>
+											<td>Lorem Ipsum is simply dummy text....</td>
+											<td>Manish Gupta</td>
+											<td>22/06/2020</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"></a></td>
+											<td><a href="ui-designer.html">HR Manager</a></td>
+                                            <td><a href="department.html"></a>HR</td>
+                                            <td>10</td>
+                                            <td>Gurugram</td>
+                                            <td>Lorem Ipsum is simply dummy text....</td>
+                                            <td>Manish Gupta</td>
+                                            <td>22/06/2020</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox"></td>
+                                            <td><a href="ui-designer.html">UX Designer</a></td>
+                                            <td><a href="department.html">Designing</a></td>
+                                            <td>10</td>
+                                            <td>Gurugram</td>
+                                            <td>Lorem Ipsum is simply dummy text....</td>
+                                            <td>Manish Gupta</td>
+                                            <td>22/06/2020</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"></td>
+											<td><a href="ui-designer.html">UX Developer</a></td>
+											<td><a href="department.html">Development</a></td>
+											<td>10</td>
+											<td>Gurugram</td>
+											<td>Lorem Ipsum is simply dummy text....</td>
+											<td>Manish Gupta</td>
+											<td>22/06/2020</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"></td>
+											<td><a href="ui-designer.html">Office Admin</a></td>
+											<td><a href="department.html">Administration</a></td>
+											<td>10</td>
+											<td>Gurugram</td>
+											<td>Lorem Ipsum is simply dummy text....</td>
+											<td>Manish Gupta</td>
+											<td>22/06/2020</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"></td>
+											<td><a href="ui-designer.html">Trechnician</a></td>
+											<td><a href="department.html">Networking</a></td>
+											<td>10</td>
+											<td>Gurugram</td>
+											<td>Lorem Ipsum is simply dummy text....</td>
+											<td>Manish Gupta</td>
+											<td>22/06/2020</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"></td>
+											<td><a href="ui-designer.html">Sales Manager</a></td>
+											<td><a href="department.html">Sales India</a></td>
+											<td>10</td>
+											<td>Gurugram</td>
+											<td>Lorem Ipsum is simply dummy text....</td>
+											<td>Manish Gupta</td>
+											<td>22/06/2020</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"></td>
+											<td><a href="ui-designer.html">Sales Manager</a></td>
+											<td><a href="department.html">Sales India</a></td>
+											<td>10</td>
+											<td>Gurugram</td>
+											<td>Lorem Ipsum is simply dummy text....</td>
+											<td>Manish Gupta</td>
+											<td>22/06/2020</td>
+										</tr>
+										<tr>
+											<td><input type="checkbox"></td>
+											<td><a href="ui-designer.html">Sales Manager</a></td>
+											<td><a href="department.html">Sales India</a></td>
+											<td>10</td>
+											<td>Gurugram</td>
+											<td>Lorem Ipsum is simply dummy text....</td>
+											<td>Manish Gupta</td>
+											<td>22/06/2020</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock %}
+
+{% block extrajs %}
+
+{% endblock %}

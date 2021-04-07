@@ -1,0 +1,251 @@
+{% extends "ixmeetbase.html" %}
+{% load  static %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-md-6"><h4 style="margin-top: 8px;">Dashboard</h4></div>
+            <div class="col-md-6"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 mb-4">
+
+                <div class="card mb-4">
+                    <div class="job-detail-right">
+                        <div class="graph">
+                            <div class="btn-group m-2" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-primary">Jobs</button>
+                                <button type="button" class="btn btn-light">Recruiter</button>
+                            </div>
+                            <div class="gr-btn">
+                                <select class="custom-select custom-select-sm">
+                                    <option selected>This week</option>
+                                    <option value="1">Today</option>
+                                    <option value="2">Month</option>
+                                </select>
+                                <button type="button" class="btn btn-light">
+                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <canvas id="myAreaChart" width="100%"></canvas>
+                        </div>
+
+                        <div class="graph-heading">Job Status</div>
+                        <div class="jobtab">
+                            <a href="#">
+                                <h2>{{ total_jobs }}</h2>
+                                <small>Total Jobs</small></a>
+                            <a href="#">
+                                <h2>{{ under_process_jobs }}</h2>
+                                <small>Under Process</small></a>
+                            <a href="#"><h2>{{ onhold_jobs }}</h2>
+                                <small>Onhold Positions</small></a>
+                            <a href="#"><h2>{{ closed_jobs_count }}</h2>
+                                <small>Closed</small></a>
+                            <a href="#" style="border-right: 0px;"><h2>{{ action_required }}</h2>
+                                <small>Action Required</small></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <h4 class="card-title">
+                            <i class="float-left mr-2 fa fa-table" aria-hidden="true"></i>
+                            Positions On Top
+                        </h4>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table m-0">
+                                <thead>
+                                <tr>
+                                    <th>Job ID</th>
+                                    <th>Openings</th>
+                                    <th>Applied</th>
+                                    <th>Status</th>
+                                    <th>Interviewer</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for job in top_jobs %}
+                                    <tr>
+                                        <td>{{ job.fkjobposition }}</td>
+                                        <td><a href="{% url 'applicant_list' %}?job_id={{ job.fkjobposition }}">{{ job.fkjobposition__jobtitle }}</a></td>
+                                        <td>
+                                            <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                                {{ job.aCount }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if job.fkjobposition__status == 0 %}
+                                                <span class="badge badge-success">CLOSED</span>
+                                            {% elif job.fkjobposition__status == 1 %}
+                                                <span class="badge badge-success">ACTIVE</span>
+                                            {% elif job.fkjobposition__status == 4 %}
+                                                <span class="badge badge-success">SUBMITTED</span>
+                                            {% elif job.fkjobposition__status == 5 %}
+                                                <span class="badge badge-success">{{ job.status }}</span>
+                                            {% elif job.fkjobposition__status == 6 %}
+                                                <span class="badge badge-success">LIVE INTERVIEW</span>
+                                            {% elif job.fkjobposition__status == 7 %}
+                                                <span class="badge badge-success">OFFER ACCEPTED</span>
+                                            {% else %}
+                                                <span class="badge badge-success">OPEN</span>
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{% url 'user' %}">{{ job.fkjobposition__created_by }}</a></td>
+                                    </tr>
+                                {% empty %}
+                                    <p>
+                                      Jobs data not available
+                                    </p>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer clearfix">
+                        <a href="{% url 'create_job' %}" class="btn btn-sm btn-info float-left">Create New Job</a>
+                        <a href="{% url 'jobs' %}" class="btn btn-sm btn-secondary float-right">View All Jobs</a>
+                    </div>
+                    <!-- /.card-footer -->
+                </div>
+            </div>
+
+            <div class="col-xl-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="float-left mr-2 fa fa-rss" aria-hidden="true"></i>
+                        <h4>News Feeds</h4> <span class="card-header-notification">5 new</span>
+                    </div>
+                    {% include 'news_feed_list.html' %}
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="float-left mr-2 fa fa-rss" aria-hidden="true"></i>
+                        <h4>To Do List</h4>
+                        <span class="card-header-notification">{{ interviews|length }} new</span>
+                    </div>
+                    {% for task in interviews %}
+                        <div class="feed to-do">
+                            <a href="#" class="jf-icons btn-primary">UI</a>
+                            <div class="feed-content">
+                                <strong>{{ task.fkjobapplication.fkjobposition.jobtitle}}
+                                </strong> interview with
+                                <a href="candidate-detail.html">{{ task.fkjobapplication.fkcandidate.name}}</a>.<br>
+                                <small>Today 5:60 pm - 12.06.2014</small>
+                            </div>
+                            <span class="feed-alert badge-warning">Pending</span>
+                        </div>
+                    {% empty %}
+                        You are done for the day.
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-xl-3">
+                <div class="card mb-4">
+                    <div class="card-header"><a href="#" id="sbtn"><i class="float-left mr-2 fas fa-search"
+                                                                      aria-hidden="true"></i></a>
+                        <h4 class="card-title">Live Candidates</h4>
+                        <input class="ch-search" type="text" placeholder="Type">
+                        <span class="card-header-notification">5 new</span>
+                    </div>
+                    <div class="feedbox-min">
+                        <div class="card-body">
+                            <a href="candidate-interview.html" class="members">
+                                <img src="{% static 'assets/img/Nadine-Richardson-profile-square.jpg' %}" alt="">
+                                <span>Aditya Bansal</span>
+                                <small>UX Designer</small>
+                            </a>
+                            <a href="candidate-interview.html" class="members">
+                                <img src="{% static 'assets/img/opulent-profile-square-05.jpg' %}" alt="">
+                                <span>Vernon Jones</span>
+                                <small>UX Designer</small>
+                            </a>
+                            <a href="candidate-interview.html" class="members">
+                                <img src="{% static 'assets/img/profile.jpg' %}" alt="">
+                                <span>Constance Kennedy</span>
+                                <small>UX Designer</small>
+                            </a>
+                            <a href="candidate-interview.html" class="members">
+                                <img src="{% static 'assets/img/profile_square3.jpg' %}" alt="">
+                                <span>Brandon Gomez</span>
+                                <small>UX Designer</small>
+                            </a>
+                            <a href="candidate-interview.html" class="members">
+                                <img src="{% static 'assets/img/reed-profile-square.jpg' %}" alt="">
+                                <span>Rodolfo Nguyen</span>
+                                <small>UX Designer</small>
+                            </a>
+                            <a href="candidate-interview.html" class="members">
+                                <img src="{% static 'assets/img/square-profile-pic-2.jpg' %}" alt="">
+                                <span>Bennie Hall</span>
+                                <small>UX Designer</small>
+                            </a>
+                            <a href="candidate-interview.html" class="members">
+                                <img src="{% static 'assets/img/reed-profile-square.jpg' %}" alt="">
+                                <span>Judy Cox</span>
+                                <small>UX Designer</small>
+                            </a>
+                            <a href="candidate-interview.html" class="members">
+                                <img src="{% static 'assets/img/square-profile-pic-2.jpg' %}" alt="">
+                                <span>Gertrude French</span>
+                                <small>UX Designer</small>
+                            </a>
+
+                        </div>
+                    </div>
+                    <!-- --></div>
+                <div class="card mb-3">
+                    <div class="card-header"><i class="float-left mr-2 fa fa-user-plus" aria-hidden="true"></i><h4
+                            class="card-title">Top Interviewers</h4></div>
+                    <div class="card-body">
+                        {% for interviewer in top_interviewers %}
+                            <a href="{% url 'user' %}" class="members">
+                                <img src="{% static 'assets/img/profile.jpg' %}" alt="">
+                                <span>{{ interviewer.fkinterviewer__name }}</span>
+                                <small>{{ interviewer.fkinterviewer__designation}}</small>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extrajs %}
+    <script type="application/javascript">
+        window.onload = function (){
+
+            $.ajax({
+                url: 'ajax/get_news_feed/',
+                type: 'get',
+                data: { },
+                success: function(data) {
+                    $('#feed_container').html(data);
+                },
+                failure: function(data) {
+                    console.log(data)
+                }
+                });
+
+                let chartData = {
+                    depts: [],
+                    completed_jobs: [],
+                    total_jobs: []
+                }
+                {% for item in departments %}
+                    chartData.depts.push("{{ item.name  }}".toString())
+                    chartData.total_jobs.push("{{ item.total_jobs  }}".toString())
+                    chartData.completed_jobs.push("{{ item.completed_jobs  }}".toString())
+                {% endfor %}
+                chartData.max_job_count = {{ total_jobs }}
+                new areaChart(chartData);
+            }
+    </script>
+
+{% endblock %}

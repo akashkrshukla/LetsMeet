@@ -1,0 +1,256 @@
+{% extends "ixmeetbase.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+    <!-- Add Candidate -->
+    <div class="modal fade" id="addcandidate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form action="/candidate/add_candidate/" method="post" enctype="multipart/form-data" class="modal-content">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Candidate</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Candidate Name</label>
+                        <input required name="name" type="text" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input required name="email" type="email" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Gender</label>
+                        <select required name="gender" class="custom-select custom-select-sm">
+                            <option name="gender" selected="">Select gender</option>
+                            <option name="gender" value="1">Male</option>
+                            <option name="gender" value="2">Female</option>
+                            <option name="gender" value="3">Transgender</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Add Skills</label>
+                        <input hidden id="skillarray" name="skills" value={{ skills }}>
+                        <input type="text" class="form-control float-left ui-autocomplete-input" id="tags"
+                               autocomplete="on">
+                        <i class="btn btn-primary br50 float-right" id="addrole" style="padding: 4px; margin-top: -33px; margin-right: 3px; display: none;"
+                                data-toggle="modal" data-target="#exampleModalCenter">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                        </i>
+                    </div>
+                    <div id="skillset"  class="row pl-3 pt-1">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Notice Period</label>
+                                <input required name="notice_period" type="text" class="form-control" aria-describedby="companyhelp"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label>Current Salary</label>
+                                <input required name="cur_salary" type="text" class="form-control" aria-describedby="companyhelp"
+                                       placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-xl-12">
+                            <label>Resume</label>
+                            <div class="custom-file">
+                                <input name="resume" type="file" accept=".doc, .docx, .pdf" class="custom-file-input" id="inputGroupFile04">
+                                <label class="custom-file-label" for="inputGroupFile04">Upload Resume</label>
+                                <small class="text-muted">Only .pdf or .doc file supported </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: block;">
+                    <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                    <button type="submit" class="btn btn-primary float-right" >Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Add Candidate -->
+    <!-- bulkupload -->
+    <div class="modal fade" id="bulkupload" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form action="/candidate/upload_candidate/" method="post" enctype="multipart/form-data" class="modal-content">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Upload file</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="custom-file">
+                        <input required name="candidate_sheet" type="file" class="custom-file-input" id="inputGroupFile04">
+                        <label class="custom-file-label" for="inputGroupFile04">Upload file</label>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: block;">
+                    <a target="_blank" href="download/?file=candidate-upload.xlsx" class="btn btn-link float-left">
+                        Download sample file
+                    </a>
+                    <button type="submit" class="btn btn-primary float-right" >Upload</button>
+                    <!-- Upload Progress -->
+					<div class="modal fade" id="uploadprogress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					  <div class="modal-dialog  modal-lg modal-dialog-centered" role="document">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle"> Wait! Your cvs are uploading...</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						  </div>
+						  <div class="modal-body">
+							  <small>Uploading <span id="value">100</span>/200</small>
+							<div class="progress">
+							  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+							</div>
+							  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+							  <strong>23 cvs</strong> are not uploaded!
+							  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							  </button>
+							</div>
+							  <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+							  <strong>200 cvs</strong> uploaded!
+							  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							  </button>
+							</div>
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-primary"  data-dismiss="modal">Ok</button>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				    <!-- Upload Progress -->
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-md-6"><h4 style="margin-top: 8px;">Candidates</h4></div>
+            <div class="col-md-6">
+                <button class="btn btn-primary float-right" data-toggle="modal" data-target="#addcandidate">Add
+                    Candidate
+                </button>
+                <button class="btn btn-dark float-right mr-3" data-toggle="modal" data-target="#bulkupload">Bulk
+                    Upload
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover client-table" id="dataTable" width="100%"
+                                   cellspacing="0">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Curr. Position</th>
+                                    <th>Curr. Company</th>
+                                    <th>Create Date</th>
+                                    <th>Notice Period</th>
+                                    <th>Curr. Salary</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for candidate in cnd_list %}
+                                    <tr>
+                                        <td><a href="candidate_detail/?cnd_id={{ candidate.id }}"><span
+                                                class="badge badge-primary br50">AB</span> {{ candidate.name }}</a></td>
+                                        <td><a href="#">{{ candidate.fkcity.cityname }}</a></td>
+                                        <td>{{ candidate.current_position }}</td>
+                                        <td>{{ candidate.current_company }}</td>
+                                        <td>{{ candidate.createddate }}</td>
+                                        <td>{{ candidate.notice_period_days }}</td>
+                                        <td>{{ candidate.current_salary|floatformat:2|intcomma   }}</td>
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        $(function () {
+            var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+                "Clojure",
+                "COBOL",
+                "ColdFusion",
+                "Erlang",
+                "Fortran",
+                "Groovy",
+                "Haskell",
+                "Java",
+                "JavaScript",
+                "Lisp",
+                "Perl",
+                "PHP",
+                "Python",
+                "Ruby",
+                "Scala",
+                "Scheme"
+            ];
+            $("#tags").autocomplete({
+                source: availableTags
+            });
+        });
+    </script>
+    <script>
+        var skills = []
+        $("#tags").click(function () {
+            $("#addrole").toggle();
+        });
+        $("#addrole").click(function () {
+            let input = document.getElementById("tags").value
+            if (input.trim().length == 0) return;
+            skills.push(input)
+            let skillSet = document.getElementById("skillarray")
+            skillSet.value = skills
+            $("#skillset").append(
+                            `<span class="skill"> `+ input +` <button  class="btn btn-link">
+                                <i id="" class="fas fa-times" aria-hidden="true"></i></button>
+                            </span>`)
+            document.getElementById("tags").value = ""
+        });
+        $(document).on("click", ".skill button", function (){
+            $(this).parent().remove();
+            skills.pop()
+            document.getElementById("skillarray").value = skills
+
+        })
+    </script>
+{% endblock %}

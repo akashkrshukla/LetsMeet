@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+{% extends "ixmeetbase.html" %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid">
+	<div class="row mb-2">
+		<div class="col-xl-6">
+			<h4 style="margin-top: 8px;">Create Job</h4></div>
+		<div class="col-xl-6"></div>
+	</div>
+	<div class="row">
+		<div class="col-xl-9">
+			<form action="/jobs/save_job/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+				<div class="row">
+					<div class="col-xl-8">
+						<div class="card mb-4">
+							<div class="qp-area">
+								<div class="row">
+									<div class="col-xl-4">
+										<label for="Jobtitle">Job Code</label>
+										<input required name="job_code" type="text" class="form-control" placeholder="Job code">
+                                    </div>
+									<div class="col-xl-4">
+										<div class="form-group">
+											<label for="Jobtitle">Job Title</label>
+											<input minlength="3" maxlength="30" required name="job_title" type="text" class="form-control" placeholder="Job title">
+                                            {% if form_errors.job_title  %}
+                                                <small class="text-danger">{{ form_errors.job_title }}</small>
+                                            {% endif %}
+                                        </div>
+									</div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="Jobtitle">Openings</label>
+                                            <input min="1" required name="openings" type="text" class="form-control" placeholder="Number of Opeinings">
+                                        </div>
+                                    </div>
+								</div>
+								<div class="row mb-2">
+									<div class="col-xl-4">
+										<label for="Jobtitle">Create Date</label>
+										<input onchange="create_date_changed()" id="create_date" required name="created_date" type="date" class="form-control" placeholder="Date">
+                                    </div>
+                                    {% if form_errors.created_date  %}
+                                            <small class="text-danger">{{ form_errors.created_date }}</small>
+                                    {% endif %}
+									<div class="col-xl-4">
+										<label for="Jobtitle">Close Date</label>
+										<input onchange="close_date_changed()" id="close_date" required name="closed_date" type="date" class="form-control" placeholder="Date">
+                                        {% if form_errors.closed_date  %}
+                                            <small class="text-danger">{{ form_errors.closed_date }}</small>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-xl-3">
+										<label for="Jobtitle">Slot Time</label>
+										<select required name="slottype" class="custom-select">
+											  <option value="1" selected>30 mins</option>
+											  <option value="2" >60 mins</option>
+											  <option value="3">90 mins</option>
+											</select>
+									</div>
+                                    <div class="col-xl-4">
+										<label for="Jobtitle">Select Stage</label>
+										<select required name="stage" class="custom-select">
+											<option selected value="1">Active</option>
+											<option value="2">Lead</option>
+											<option value="3">Suggested</option>
+											<option value="4">Submitted</option>
+											<option value="5">Final Interview</option>
+											<option value="6">Offer Accepted</option>
+										</select>
+                                        {% if form_errors.stage  %}
+                                            <small class="text-danger">{{ form_errors.stage }}</small>
+                                        {% endif %}
+									</div>
+								</div>
+								<div class="row mb-2">
+									<div class="col-xl-6">
+                                        <div class="form-group">
+                                            <label for="Jobtitle">Client</label>
+                                            <select required id="client" onchange="get_interviewer();" name="client" class="custom-select">
+                                                 {% for client in clients %}
+                                                     <option value="{{ client.id }}">{{ client.name }}</option>
+                                                 {% endfor %}
+											</select>
+										</div>
+									</div>
+									<div class="col-xl-6">
+										<label for="Jobtitle">Department</label>
+										<select required name="department" class="custom-select">
+											{% for dept in departments %}
+                                                <option value="{{ dept.id }}">{{ dept.name}}</option>
+                                            {% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="row mb-2">
+									<div class="col-xl-6">
+										<label>Country</label>
+                                    <select required name="country" class="custom-select">
+                                        {% for country in cntry_list%}
+                                            <option name="country" value="{{country.countryname}}">{{country.countryname}}</option>
+                                        {% endfor%}
+                                    </select>
+									</div>
+									<div class="col-xl-6">
+										<label>City</label>
+                                        <select required name="city" class="form-control">
+                                            {% for city in city_list%}
+                                            <option value="{{city.cityname}}">{{city.cityname}}</option>
+                                            {%endfor%}
+                                        </select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="exampleInputEmail1">Job Description</label>
+									<textarea required name="description" class="form-control" id="editor" placeholder="Job Description" style="height: 300px;"></textarea>
+								    {% if form_errors.description  %}
+                                        <small class="text-danger">{{ form_errors.description }}</small>
+                                    {% endif %}
+                                </div>
+                                <div class="custom-file">
+									<input name="attachfile" type="file" accept="image/png, image/jpeg, image/jpg" class="custom-file-input" id="customFile" placeholder="Attach files in support">
+									<label class="custom-file-label" for="customFile">Attach files in support</label>
+								</div>
+								<div class="row">
+									<div class="col-xl-12">
+                                        <input hidden id="skillarray" name="skills" value={{ skills }}>
+										<label for="exampleInputEmail1">Key Skills *</label>
+										<br>
+										<div id="skillset" class="row mb-2">
+										</div>
+										<div class="input-group mb-3">
+											<input id="skilltext" type="text" class="form-control" placeholder="Enter Multiple Keywords" aria-label="Recipient's username" aria-describedby="basic-addon2">
+											<div class="input-group-append">
+												<button id="addskill" class="btn btn-primary" type="button">Add</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row mt-3">
+                                    <div class="col-xl-4">
+										<label for="experience">Experience <small>(Years)</small>*</label>
+										<!--<br>
+										<input type="text" id="amount" readonly style="border:0; color:#000; font-weight:bold; width:38px;">
+											<div id="slider-range"></div>-->
+										<div class="row">
+											<div class="col-xl-6">
+                                                <label>Min</label><br>
+                                                <select id="min_exp" name="tot_exp_min" class="custom-select">
+                                                    {%for i in 'abcdefghijklmnopqrstuvwxyzabcdef'%}
+                                                            <option type="number" value="{{forloop.counter}}" name="tot_exp_min">{{forloop.counter}}</option>
+                                                    {%endfor%}
+                                                </select>
+											</div>
+											<div class="col-xl-6">
+												<label>Max</label><br>
+                                                <select id="max_exp" name="tot_exp_max" class="custom-select">
+                                                    {%for i in 'abcdefghijklmnopqrstuvwxyzabcdef'%}
+                                                            <option  name="tot_exp_max" value="{{forloop.counter}}">{{forloop.counter}}</option>
+                                                    {%endfor%}
+                                                </select>
+											</div>
+                                        </div>
+                                        <div style="line-height: 1rem; margin-top: 3px; color: #f86e7b" id="exp_err_message"></div>
+									</div>
+									<div class="col-xl-4">
+										<label for="experience">CTC <small>(Lakhs)</small>*</label>
+										<div class="row">
+											<div class="col-xl-6">
+												<label>Min</label>
+												<br>
+												<select id="min_ctc" name="min_ctc" class="custom-select">
+													{%for i in 'abcdefghijklmnopqrstuvwxyz'%}
+                                                            <option selected value="{{forloop.counter}}" name="min_ctc">{{forloop.counter}}</option>
+                                                    {%endfor%}
+												</select>
+											</div>
+											<div class="col-xl-6">
+												<label>Max</label>
+												<br>
+												<select id="max_ctc" name="max_ctc" class="custom-select">
+													{%for i in 'abcdefghijklmnopqrstuvwxyz'%}
+                                                            <option selected value="{{forloop.counter}}" name="max_ctc">{{forloop.counter}}</option>
+                                                    {%endfor%}
+												</select>
+											</div>
+										</div>
+                                        <div style="line-height: 1rem; margin-top: 3px; color: #f86e7b" id="ctc_err_message"></div>
+									</div>
+									<div class="col-xl-4">
+										<br>
+										<label for="exampleInputEmail1">Job Type *</label>
+										<select name="job_type" class="custom-select" style="margin-top: 10px;">
+											<option value="0" selected>Permanent</option>
+											<option value="1">Part Time</option>
+											<option value="2">Contract</option>
+											<option value="3">Freelancer</option>
+										</select>
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-xl-6 ats-form border-right">
+										<label for="Jobtitle">Primary Recruiter(s) :</label>
+										<br>
+										<select name="prim_recruiter" class="custom-select mt-2">
+                                            {% for recruiter in recruiters %}
+                                                <option name="prim_recruiter" value="{{ recruiter.email }}" selected="">{{ recruiter.first_name }} {{ recruiter.last_name }}</option>
+                                            {% endfor %}
+										</select>
+									</div>
+									<div class="col-xl-6 ats-form border-right">
+										<label for="Jobtitle">Interviewers :</label>
+                                        <div>
+                                            <a hidden id="latest_interviewer" class="skill interview">
+                                            </a>
+                                        </div>
+                                        <a hidden id="other_count" class="btn btn-link" style="margin-top: 10px; text-decoration: none;"
+                                           data-toggle="modal" data-target="#exampleModalCenter">
+                                            view more
+                                        </a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                          <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                     Interviewers Added
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                              <div id="interviewer_list" class="modal-body list-holder">
+
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Save changes</button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <input name="interviewers" hidden id="interviewer_array">
+                                        <div class="input-group mt-2 float-left">
+                                              <input id="interviewer_email" type="email" class="form-control" placeholder="Enter Email Address">
+                                              <div class="input-group-append">
+                                                <button id="add_interviewer" class="btn btn-primary" type="button">Add</button>
+                                              </div>
+                                        </div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div class="card">
+							<div class="m-3">
+								<div class="form-group">
+									<label for="exampleInputEmail1">Minimum Educational Requirement:</label>
+									<select name="min_education" class="custom-select">
+										{% for qualification in academic %}
+                                            <option name="min_education" value="{{ qualification.name }}" selected>{{ qualification.name }}</option>
+                                        {% endfor %}
+                                    </select>
+								</div>
+								<div class="form-group">
+									<label for="exampleInputEmail1">Certification</label>
+									<textarea name="certifications" class="form-control" placeholder="Any Certification that is required for job or mandatory for job." style="height: 235px;"></textarea>
+								</div>
+								<div class="form-group">
+									<label for="exampleInputEmail1">Other Info</label>
+									<textarea name="other_info" class="form-control" placeholder="Any additional information  mandatory for job." style="height: 226px;"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col-xl-12 mb-4"> </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-8 mb-5">
+					<a type="button" class="btn btn-primary float-left" onclick="location.href='/jobs/create_job'">Reset</a>
+					<button type="submit" class="btn btn-primary ml-2" >Save</button>
+					<a type="submit" class="btn btn-primary float-right" onclick="location.href='/jobs/create_interview'">Create Interview</a>
+				</div>
+			</form>
+        </div>
+
+
+		<div class="col-xl-3">
+			<div class="card mb-3 interview-upd">
+				<div class="card-header"> <i class="float-left mr-2 fa fa-rss" aria-hidden="true"></i>
+					<h4>Jobs Created by me</h4> <span class="card-header-notification">4 new</span> </div>
+				<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+					<div class="feed-content"><strong>UI Developer</strong> interview created.
+						<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+				<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+					<div class="feed-content"><strong>UI Developer</strong> interview created.
+						<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+				<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+					<div class="feed-content"><strong>UI Developer</strong> interview created.
+						<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+				<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+					<div class="feed-content"><strong>UI Developer</strong> interview created.
+						<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+				<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+					<div class="feed-content"><strong>UI Developer</strong> interview created.
+						<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+				<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+					<div class="feed-content"><strong>UI Developer</strong> interview created.
+						<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+				<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+					<div class="feed-content"><strong>UI Developer</strong> interview created.
+						<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+				<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+					<div class="feed-content">
+                        <strong>UI Developer</strong> interview created.
+						<br>
+                        <small>Today 5:60 pm - 12.06.2014</small>
+                    </div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a>
+                    <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a>
+                    <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a></div>
+				<!---->
+			</div>
+		</div>
+	</div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+        <script src="{% static 'js/view-changer.js' %}"></script>
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+        function create_date_changed() {
+            var cr_date = document.getElementById("create_date").value;
+            document.getElementById("close_date").min = cr_date;
+            {#    document.getElementById("close_date").value = null;#}
+        }
+        function close_date_changed() {
+            var cl_date = document.getElementById("close_date").value;
+            document.getElementById("create_date").max = cl_date;
+        }
+
+        function get_interviewer() {
+                {#$.ajax({#}
+                {#url: '../ajax/get_interviewers/',#}
+                {#type: 'get',#}
+                {#data: { client: document.getElementById('client').value },#}
+                {#success: function(data) {$('#interviewers').html(data);},#}
+                {#failure: function(data) {console.log(data)}});#}
+        }
+
+        let skills = []
+        let interviewers = [];
+		  $( function() {
+			$( "#slider-range" ).slider({
+			  range: true,
+			  min: 0,
+			  max: 25,
+			  values: [ 5, 8 ],
+			  slide: function( event, ui ) {
+				$( "#amount" ).val( "" + ui.values[ 0 ] + "-" + ui.values[ 1 ] );
+			  }
+			});
+			$( "#amount" ).val( "" + $( "#slider-range" ).slider( "values", 0 ) +
+			  "-" + $( "#slider-range" ).slider( "values", 1 ));
+		  } );
+          $( function() {
+			$( "#package-range" ).slider({
+			  range: true,
+			  min: 0,
+			  max: 50,
+			  values: [ 5, 10 ],
+			  slide: function( event, ui ) {
+				$( "#pcamount" ).val( "" + ui.values[ 0 ] + "-" + ui.values[ 1 ] );
+			  }
+			});
+			$( "#pcamount" ).val( "" + $( "#package-range" ).slider( "values", 0 ) +
+			  "-" + $( "#package-range" ).slider( "values", 1 ));
+		  } );
+          $("#addskill").click(function () {
+            let input = document.getElementById("skilltext").value
+            skills.push(input)
+            let skillSet = document.getElementById("skillarray")
+            skillSet.value = skills
+            $("#skillset").append(
+                            `<span class="skill"> `+ input +` <button  class="btn btn-link">
+                                <i id="" class="fas fa-times" aria-hidden="true"></i></button>
+                            </span>`);
+            document.getElementById("skilltext").value = "";
+        });
+            $(document).on("click", ".skill button", function (){
+                $(this).parent().remove();
+                skills.pop()
+                document.getElementById("skillarray").value = skills
+            })
+
+        $(document).ready(function (){
+            var $min_exp= $("#min_exp");
+            var $max_exp = $("#max_exp");
+            var $exp_err_msg = $("#exp_err_message");
+
+            $min_exp.add($max_exp).change(function () {
+                var text = "";
+                var minVal = parseInt($min_exp.val(),10);
+                var maxVal = parseInt($max_exp.val(),10)
+                var bothHaveValues = !isNaN(minVal) && !isNaN(maxVal);
+
+                if(bothHaveValues){
+                    if(minVal > maxVal){
+                        text += 'Minimum experience should be less than maximum';
+                    }else if(maxVal < minVal){
+                        text += 'Maximum experience should be greater than minimum';
+                    }
+                }
+                $exp_err_msg.html(text);
+                });
+
+            var $min_ctc= $("#min_ctc");
+            var $max_ctc = $("#max_ctc");
+            var $ctc_err_msg = $("#ctc_err_message");
+
+            $min_ctc.add($max_ctc).change(function () {
+                var text = "";
+                var minVal = parseInt($min_ctc.val(),10);
+                var maxVal = parseInt($max_ctc.val(),10)
+                var bothHaveValues = !isNaN(minVal) && !isNaN(maxVal);
+
+                if(bothHaveValues){
+                    if(minVal > maxVal){
+                        text += 'Minimum ctc should be less than maximum';
+                    }else if(maxVal < minVal){
+                        text += 'Maximum ctc should be greater than minimum';
+                    }
+                }
+                $ctc_err_msg.html(text);
+                });
+        })
+
+        $("#add_interviewer").click(function () {
+            let input = document.getElementById("interviewer_email").value;
+            interviewers.push(input)
+            document.getElementById("latest_interviewer").innerHTML = ` `+ input +`
+                                        <button type="button" class="btn btn-link">
+                                            <i class="fas fa-times" aria-hidden="true"></i>
+                                        </button>`;
+            document.getElementById("latest_interviewer").hidden = false;
+            document.getElementById("interviewer_email").value = "";
+
+            document.getElementById("interviewer_array").value = interviewers;
+            if(interviewers.length > 1){
+                let others = document.getElementById("other_count");
+                others.hidden = false;
+                others.innerHTML = "+" + (interviewers.length - 1)  + " more";
+                document.getElementById("exampleModalLongTitle").innerHTML = interviewers.length + " Interviewers added"
+            }
+            $("#interviewer_list").prepend(
+                            `<a href="#" class="skill interview">
+                                `+ interviewers[interviewers.length-2] +`
+                                <button type="button" class="btn btn-link">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                </button>
+                            </a>
+                            `);
+            if(interviewers.length >= 5){
+                document.getElementById("add_interviewer").disabled = true;
+            }
+        });
+
+        $(document).on("click", ".interview button", function (){
+            $(this).parent().remove();
+            interviewers.pop();
+            document.getElementById("interviewer_array").value = interviewers;
+        })
+        </script>
+{% endblock %}

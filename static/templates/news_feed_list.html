@@ -1,0 +1,38 @@
+{% load static %}
+{% block content %}
+
+                    <div id="feed_container" class="feedbox-min">
+                        {% for feed in news_feeds %}
+                            <div class="feed">
+                                {% if feed.5  %}
+                                    <a href="{{ feed.attribute.1 }}">
+                                        <img src="{% static feed.5 %}" alt=""/>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ feed.attribute.1 }}">
+                                        <img src="{% static 'assets/img/Nadine-Richardson-profile-square.jpg' %}" alt=""/>
+                                    </a>
+                                {% endif %}
+                                    <div class="feed-content">
+                                            <strong>{{ feed.attribute.0}}</strong>
+                                            {{ feed.attribute.2 }}
+                                            <a href="#">{{ feed.attribute.3 }}</a>.
+                                            <br>
+                                            <small>{{ feed.date|date}}</small>
+                                    </div>
+                            </div>
+                        {% endfor %}
+{#                        <div class="feed">#}
+{#                                <a href="#">#}
+{#                                    <img src="{% static 'assets/img/Nadine-Richardson-profile-square.jpg' %}" alt=""/>#}
+{#                                </a>#}
+{#                                <div class="feed-content">#}
+{#                                    <strong>Monica Smith</strong> joined as#}
+{#                                    <a href="#">System Admin</a>.#}
+{#                                    <br>#}
+{#                                    <small>Today 5:60 pm - 12.06.2014</small>#}
+{#                                </div>#}
+{#                                <span class="feed-time">5 mins ago</span>#}
+{#                        </div>#}
+                    </div>
+{% endblock %}

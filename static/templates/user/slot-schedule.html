@@ -1,0 +1,22 @@
+<div id="schedule_data" class="slots">
+    {% for interview in interviews %}
+        <div id="{{ interview.id }}" class="slot">
+            <span class="float-left">{{ interview.fkinterviewslot.starttime}} - {{ interview.fkinterviewslot.endtime}}</span>
+            <span class="mis-jt">{{ interview.fkjobapplication.fkjobposition.jobtitle }}</span>
+            <span class="mis-cn">{{ interview.fkjobapplication.fkcandidate.name }}</span>
+            <button class="btn btn-dark float-right m-2 mt-3" data-toggle="modal" data-target="#transferpopup">Transfer</button>
+            <button class="btn btn-primary float-right m-2 mt-3" data-toggle="modal" data-target="#propose">Propose</button>
+            <form action="accept_slot/" method="post" >
+                {% csrf_token %}
+                <input name="int_id" value="{{ interview.id }}" hidden>
+                <button class="btn btn-primary float-right m-2 mt-3" id="accept1">
+                    Accept
+                </button>
+            </form>
+        </div>
+    {% empty %}
+        <div class="slot">
+            <span>No Scheduled Interview</span>
+        </div>
+    {% endfor %}
+</div>

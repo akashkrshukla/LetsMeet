@@ -1,0 +1,30 @@
+{% load static %}
+<html>
+<head>
+		<title>Intellworx:: Aditya Bansal</title>
+	    <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <link href="{% static 'css/corporate.css' %}" rel="stylesheet" />
+	 	<link href="{% static 'css/video.css' %}" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<link href="{% static 'css/jqx.base.css' %}" rel="stylesheet" />
+		<link href="{% static 'css/jqx.light.css' %}" rel="stylesheet" />
+</head>
+<nav>
+<div class="container">
+    <ul>
+        <li><a href="{% url 'my_interviews' %}">My Interviews</a></li>
+        <li><a href="faq.html">FAQs</a></li>
+        <li><a href="{% url 'applicant_detail' %}">My Profile</a></li>
+        <li><a href="#">How It works</a></li>
+        <li><a href="{% url 'applicant' %}">Logout</a></li>
+    </ul>
+</div>
+</nav>
+</html>
+
+

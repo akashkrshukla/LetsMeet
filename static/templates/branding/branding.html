@@ -1,0 +1,413 @@
+
+{% extends "ixmeetbase.html" %}
+{% load static %}
+{% block content %}
+    	<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-xl-6">
+					<h4>Branding</h4></div>
+				<div class="col-xl-6"></div>
+			</div>
+			<div class="row">
+				<form action="/branding/save_branding/" method="post" enctype="multipart/form-data" class="col-xl-6">
+					{% csrf_token %}
+                    <div class="card mb-3">
+						<div class="card-header">
+							<h4><i class="far fa-building"></i> Company Information</h4>
+							<!--<a href="#" class="float-right"><i class="fas fa-chevron-down"></i></a>--></div>
+					<div class="card-body">
+                            <div class="row">
+								<div class="col-xl-6">
+									<label for="Jobtitle">Client</label>
+										<select required id="client" onchange="get_branding_data();" name="client" class="custom-select">
+                                             <option selected value="">Choose client</option>
+                                            {% for client in clients %}
+                                                 {% if sel_customer.id == client.id %}
+                                                    	 <option selected value="{{ client.id }}">{{ client.name }}</option>
+                                                 {% else %}
+                                                         <option value="{{ client.id }}">{{ client.name }}</option>
+                                                 {% endif %}
+											 {% endfor %}
+										</select>
+								</div>
+                                <div class="col-xl-6">
+									<div class="form-group">
+										<label for="companyTextbox">Company Name</label>
+										<input required name="company_name"
+                                               value="{{ branding.fkcustomer.name }}" type="text"
+                                               class="form-control" id="companyTextbox"
+                                               aria-describedby="companyhelp" placeholder="{{ branding.fkcustomer.name }}" >
+                                        <small id="emailHelp" class="form-text text-muted">
+                                            e.g. intellWorx
+                                        </small>
+									</div>
+								</div>
+							</div>
+                            <div class="row">
+								<div class="col-xl-6 mt-3">
+                                    {% if branding.logofilepath  %}
+                                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                            <a href="#" class="text-dark" data-toggle="modal" data-target="#logo">
+                                                <img style="height: 30px;" src="{% static branding.logofilepath %}" width="50" alt="" />
+                                            </a>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+									    </div>
+                                    {% endif %}
+                                    <div class="custom-file">
+                                        {% if branding.logofilepath %}
+                                                <input name="logo" type="file" value="{{ branding.logofilepath }}"
+                                                   class="custom-file-input" id="logofile" accept="image/png, image/jpeg, image/jpg">
+                                        {% else %}
+                                                <input required name="logo" type="file" value="{{ branding.logofilepath }}"
+                                                   class="custom-file-input" id="logofile" accept="image/png, image/jpeg, image/jpg">
+                                        {% endif %}
+                                        <label class="custom-file-label logofile" for="customFile">Upload Logo</label>
+									</div>
+                                    <div class="modal fade" id="logo" tabindex="-1" role="dialog" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLongTitle">Logo Preview</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+												</div>
+												<div class="modal-body bg-secondary">
+                                                    <img src="{% static branding.logofilepath %}" width="100%" alt="" />
+                                                </div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-dark" data-dismiss="modal">Ok</button>
+													<button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-6  mt-3">
+                                    {% if branding.bannerfilepath %}
+                                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                            <a href="#" class="text-dark" data-toggle="modal" data-target="#banner">
+                                                <img style="height: 30px;width: 30px;" src="{% static branding.bannerfilepath %}" width="100" alt="" />
+                                            </a>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+
+                                    {% endif %}
+                                    <div class="custom-file">
+										{% if branding.bannerfilepath %}
+                                            <input name="banner" type="file" value="{{ branding.bannerfilepath }}" class="custom-file-input"
+                                               id="bannerfile" accept="image/png, image/jpeg, image/jpg">
+                                        {% else %}
+                                            <input required name="banner" type="file" value="{{ branding.bannerfilepath }}" class="custom-file-input"
+                                               id="bannerfile" accept="image/png, image/jpeg, image/jpg">
+                                        {% endif %}
+                                        <label class="custom-file-label bannerfile" for="customFile">Upload Banner</label>
+									</div>
+                                    <div class="modal fade" id="banner" tabindex="-1" role="dialog" aria-hidden="true">
+										<div class="modal-dialog modal-dialog-centered" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLongTitle">Banners Preview</h5>
+													<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+												</div>
+												<div class="modal-body bg-secondary">
+                                                    <img src="{% static branding.bannerfilepath %}" width="100%" alt="" />
+                                                </div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-dark" data-dismiss="modal">Ok</button>
+													<button type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group  mt-2">
+								<label for="companyTextbox">Description <small>(250 character Max.)</small></label>
+
+                                <textarea required name="description" class="form-control" id="exampleInputEmail1" style="height:210px;"
+                                          placeholder="Company Description" maxlength="250">{{ branding.description }}</textarea>
+								<small id="emailHelp" class="form-text text-muted">
+                                    eg.Intellworx is well known in Artificial Intelligence
+                                </small> </div>
+							<div class="form-group">
+								<label for="companyWebsite">Company Website</label>
+								<input name="company_website" type="text" class="form-control"
+                                       id="companyTextbox" aria-describedby="companyhelp"
+                                       value="{{ branding.website }}">
+                                <small id="Websitehelp" class="form-text text-muted">www.intellworx.com</small>
+                            </div>
+                            <div id="social_links">
+                                {% for link in social_links %}
+                                    <div class="links alert alert-primary alert-dismissible fade show" role="alert">
+                                        <a  href="#" class="text-dark">
+                                                <strong id="{{ link.url }}">
+                                                </strong>
+                                                {{ link.url }}
+                                        </a>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row">
+								<div class="col-xl-5">
+									<div class="form-group">
+										<label for="companyTextbox">Social Media Link:</label>
+										<input id="social_media_link" name="social_media_link" hidden/>
+                                        <input id="tags" type="text" class="form-control" id="socialmedia" aria-describedby="socialmedia"
+                                               placeholder="Enter your social media link">
+                                        <small id="emailHelp" class="form-text text-muted">eg. www.facebook.com/i123344</small>
+                                    </div>
+								</div>
+								<div class="col-xl-5">
+									<div class="form-group">
+										<label for="companyTextbox">Social Platform Type:</label>
+										<select id="social_platform" class="form-control">
+                                            {% for link in social_media_options %}
+                                                <option> {{ link.sitelabel }}</option>
+                                            {% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="col-xl-2">
+									<button id="addLink" type="button" class="btn btn-primary float-right" style="margin-top: 30px;">+ Add Link</button>
+								</div>
+							</div>
+						</div>
+                    </div>
+					<div class="row mb-3">
+                        {% if sel_customer.id %}
+                            <div class="col-xl-6">
+                                <a class="btn btn-primary" href="{% url "show_preview" %}?client={{ sel_customer.id }}" target="_blank">
+                                    Preview
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="col-xl-6">
+                                <a hidden class="btn btn-primary" href="{% url "show_preview" %}?client={{ sel_customer.id }}" target="_blank">
+                                    Preview
+                                </a>
+                            </div>
+                        {% endif %}
+						<div class="col-xl-6">
+							<button type="submit" class="btn btn-primary float-right">Save</button>
+						</div>
+					</div>
+				</form>
+                <form action="/branding/add_section/?client={{ sel_customer.id }}" method="post" enctype="multipart/form-data" class="col-xl-3">
+                    {% csrf_token %}
+					<div class="card mb-3">
+						<div class="card-header"> Add Sections </div>
+						<div class="card-body">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Section Title</label>
+								<input name="section_title" required class="form-control" id="sectionhead1" aria-describedby="emailHelp" placeholder="Section Title"> </div>
+							<div class="form-group">
+								<label for="exampleInputEmail1">Section Content</label>
+								<textarea name="section_content" required class="form-control" style="height: 316px;"></textarea>
+							</div>
+							<div class="row">
+								<div class="form-group col-xl-6">
+									<label>Section Color</label>
+									<input name="section_color" required class="form-control" value="#ee4c4c" type="color"> </div>
+								<div class="form-group col-xl-6">
+									<label>Text Color</label>
+									<input name="text_color" required class="form-control" value="#FFFFFF" type="color"> </div>
+{#								<div class="custom-file">#}
+{#									<input name="custom_file" required type="file" class="custom-file-input" id="customFile">#}
+{#									<label class="custom-file-label" for="customFile">Upload Media Files</label>#}
+{#								</div>#}
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xl-12">
+							<button class="btn btn-primary float-right">Add</button>
+						</div>
+					</div>
+				</form>
+				<form action="/branding/save_template/" method="post" class="col-xl-3">
+                {% csrf_token %}
+					<div class="card mb-2">
+						<div class="card-header"> Choose Templates </div>
+						<div class="card-body">
+							<div class="template-selector">
+                            <input hidden name="branding" value="{{ branding.id }}">
+                                {% for template in brand_templates %}
+                                    <label>
+                                        {% if branding.fkbrandingTemplate.id == template.id %}
+                                            <input checked type="radio" name="template" value="{{ template.id }}" id="template_id">
+                                        {% else %}
+                                            <input type="radio" name="template" value="{{ template.id }}" id="template_id">
+                                        {% endif %}
+                                        <img src="{% static template.thumbnailpath %}" alt="" />
+                                        <span>{{ template.name }}</span>
+                                    </label>
+                                {% endfor %}
+								<br>
+                            </div>
+						</div>
+						{% if prev_files|length %}
+                            <div class="card-header"> Previous Files </div>
+                        {% endif %}
+                        <div class="card-body spf">
+					        {% for file in prev_files %}
+                                <a href="#">
+                                    <img style="width: 50px; float: left" src="{% static  "media/branding/"|add:sel_customer.id|add:"/"|add:file %}" alt="" />
+                                </a>
+                            {% endfor %}
+
+{#							<a href="#"><img src="{% static 'assets/templates/1.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/2.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/3.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/4.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/5.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/6.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/7.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/8.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/1.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/2.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/3.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/4.jpg' %}" alt="" /></a>#}
+{#							<a href="#"><img src="{% static 'assets/templates/5.jpg' %}" alt="" /></a>#}
+						</div>
+{#						<div class="card-footer">#}
+{#							<div class="custom-file">#}
+{#								<input type="file" class="custom-file-input" id="inputGroupFile01">#}
+{#								<label class="custom-file-label" for="inputGroupFile01">Choose file</label>#}
+{#							</div>#}
+{#						</div>#}
+					</div>
+					<div class="col-xl-12 mb-5">
+						<button id="templatesubmit" disabled type="submit" class="btn btn-primary float-right">
+                            Apply
+                        </button>
+					</div>
+				</form>
+            </div>
+            <div class="col-xl-6">
+                {% for section in brand_sections %}
+                 <div class="card mb-4" id="newsection">
+                    <div class="card-header">
+                        <h3 class="float-left">{{ section.title }}</h3>
+                        <input type="text" class="form-control w-50 float-left" style="display: none;"
+                               value="{{ section.title }}">
+                        <button class="btn btn-link float-right ml-2" id="sectionedit">
+                            <i class="far fa-edit"></i>
+                        </button>
+                        <button class="btn btn-link float-right ml-2" id="sectiondelete">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ section.content }}</p>
+                        <textarea class="form-control section" style="height: 250px; display: none;">{{ section.content }}</textarea>
+                    </div>
+                    <div class="card-footer" style="display: none;">
+                        <button class="btn btn-dark float-right" id="updatebtn">Update</button>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+		</div>
+{% endblock %}
+
+{% block extrajs %}
+
+    <script type="application/javascript">
+        var socialLinks = []
+            {% for link in social_links %}
+                var saved_link = "{{ link.url }}" + "+" + "{{ link.fkmediasite.sitelabel }}"
+                socialLinks.push(saved_link)
+                var s_icon = get_site_logo("{{ link.fkmediasite.sitelabel }}")
+                document.getElementById("{{ link.url }}").insertAdjacentHTML("afterbegin", `<i class="`+ s_icon + `" aria-hidden="true"></i>`)
+            {% endfor %}
+        $("#addLink").click(function () {
+            let input = document.getElementById("tags").value
+            if (input.trim().length == 0) return;
+            {# According to RFC1738, valid URLs may only contain the letters a-z, the plus sign (+), period and hyphen #}
+            let links = input + "+" + document.getElementById("social_platform").value
+            socialLinks.push(links)
+            let linksSet = document.getElementById("social_media_link")
+            linksSet.value = socialLinks
+            let icon = get_site_logo(document.getElementById("social_platform").value)
+            console.log(icon)
+            $("#social_links").append(
+                            `<div class="links alert alert-primary alert-dismissible fade show" role="alert">
+                                <a href="#" class="text-dark">
+                                        <strong>
+                                            <i class="` + icon +`" aria-hidden="true"></i>
+                                        </strong>
+                                        ` + input +`
+                                </a>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+							`)
+            document.getElementById("tags").value = ""
+        });
+        $(document).on("click", ".links button", function (){
+            $(this).parent().remove();
+            socialLinks.pop();
+            console.log(socialLinks)
+            document.getElementById("social_media_link").value = socialLinks
+        })
+
+        function get_branding_data() {
+            if (document.getElementById('client').value == ""){
+                window.location.href="/branding/";
+            }
+            else {
+            window.location.href="/branding/show_branding/?client=" + document.getElementById('client').value
+            }
+        }
+        function get_site_logo(site_label){
+            switch (site_label){
+                case 'LinkedIn':
+                case 'linkedin':
+                    return 'fab fa-linkedin';
+                case 'Google':
+                case 'google':
+                    return 'fab fa-google';
+                case 'facebook':
+                case 'Facebook':
+                    return 'fab fa-facebook';
+                case 'Instagram':
+                case 'instagram':
+                    return 'fab fa-instagram';
+                default:
+                    return site_label;
+            }
+        }
+
+        window.onload = function (){
+            if(document.getElementById('client').value != ""){
+                event.preventDefault()
+                document.getElementById("templatesubmit").disabled = false
+            }
+        }
+
+        $("#logofile").change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.logofile').html(fileName);
+        });
+
+        $("#bannerfile").change(function(e){
+            var fileName = e.target.files[0].name;
+            $('.bannerfile').html(fileName);
+        });
+        // $('#umf').change(function(e){
+        // 	var fileName = e.target.files[0].name;
+        // 	$('.umf-label').html(fileName);
+        // });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+{% extends "ixmeetbase.html" %}
+{% load static %}
+{% block content %}
+
+    <div class="modal fade" id="archiveingcan" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+				</div>
+				<div class="modal-body"> Are you sure you want to archive this candidate? </div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Archive</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">Candidate Sharing</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+				</div>
+				<div class="modal-body"> http://dev.intellbill.com:9000/vat/adityabansal/ </div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Copy</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-md-6">
+					<h4 style="margin-top: 8px;">{{ job.jobtitle}}</h4></div>
+				<div class="col-md-6"></div>
+			</div>
+			<div class="row">
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="info-box bg-white"> <span class="info-box-icon"><i class="fa fa-bookmark-o" aria-hidden="true"></i></span>
+						<div class="info-box-content"> <span class="info-box-text">Applicants</span>
+                            <span class="info-box-number">{{ job.applicant|length }}</span>
+							<div class="progress">
+								<div class="progress-bar" style="width: 70%"></div>
+							</div>
+                            <span class="progress-description">
+                            70% Increase in 30 Days
+                            </span>
+                        </div>
+						<!-- /.info-box-content -->
+					</div>
+					<!-- /.info-box -->
+				</div>
+				<!-- /.col -->
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="info-box bg-white"> <span class="info-box-icon"><i class="fa fa-bookmark-o" aria-hidden="true"></i></span>
+						<div class="info-box-content"> <span class="info-box-text">Under Processing</span> <span class="info-box-number">80</span>
+							<div class="progress">
+								<div class="progress-bar" style="width: 70%"></div>
+							</div> <span class="progress-description">
+                  70% Increase in 30 Days
+                </span> </div>
+						<!-- /.info-box-content -->
+					</div>
+					<!-- /.info-box -->
+				</div>
+				<!-- /.col -->
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="info-box bg-white"> <span class="info-box-icon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
+						<div class="info-box-content"> <span class="info-box-text">Shortlisted</span> <span class="info-box-number">20</span>
+							<div class="progress">
+								<div class="progress-bar" style="width: 70%"></div>
+							</div> <span class="progress-description">
+                  70% Increase in 30 Days
+                </span> </div>
+						<!-- /.info-box-content -->
+					</div>
+					<!-- /.info-box -->
+				</div>
+				<!-- /.col -->
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="info-box bg-white"> <span class="info-box-icon"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i></span>
+						<div class="info-box-content"> <span class="info-box-text">Unresponsive</span>
+                            <span class="info-box-number">10</span>
+							<div class="progress">
+								<div class="progress-bar" style="width: 70%"></div>
+							</div> <span class="progress-description">
+                  70% Increase in 30 Days
+                </span> </div>
+						<!-- /.info-box-content -->
+					</div>
+					<!-- /.info-box -->
+				</div>
+				<!-- /.col -->
+			</div>
+			<div class="row">
+				<div class="col-xl-9">
+					<div class="card mb-4">
+						<div class="card-header"> <i class="fas fa-chart-area mr-1"></i> Interview Processing </div>
+						<div class="row">
+							<div class="col-xl-4">
+								<div class="graph-details h-100">
+									<div class="graph-data">
+										<div class="d-block" style="text-align: center;">
+											<h1>{{ job.applicant|length }}</h1>
+                                            <small>Applicants</small> </div>
+										<div class="row all-details">
+											<div class="col-xl-6" onclick="location.href='#'">Openings
+												<br>
+												<h3 style="color:#0275d8">{{ job.openings }}</h3> </div>
+											<div class="col-xl-6" onclick="location.href='#'">Applicants
+												<br>
+												<h3 style="color:#20b2aa">{{ job.applicant|length }}</h3></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-8">
+								<div class="card-body">
+									<canvas id="myAreaChart" width="100%"></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-12">
+						<div class="row">
+							<div class="col-6">
+								<h5>{{ job.jobtitle}} Applicants</h5></div>
+							<div class="col-6">
+								<button type="button" class="btn btn-light float-right" id="thview">
+                                    <i class="fa fa-th" aria-hidden="true"></i>
+                                </button>
+								<button type="button" class="btn btn-light float-right" id="gridview">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                </button>
+								{% if job.status == '0' or job.status == '7' %}
+
+                                {% else %}
+                                    <button type="submit" class="btn btn-primary float-right mr-2" onclick="location.href='create-interview.html'">
+                                        Manage Interview
+                                    </button>
+                                {% endif %}
+                                {% if job.status == '0' %}
+                                    <button class="btn btn-primary float-right mr-2">
+                                        Closed
+                                    </button>
+                                {% elif job.status == '7' %}
+                                    <button class="btn btn-primary float-right mr-2">
+                                        Archived
+                                    </button>
+                                {% else %}
+                                        <form action="/jobs/close_job/?job_id={{ job.positioncode }}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary float-right mr-2">
+                                            Mark As Closed
+                                        </button>
+                                    </form>
+                                {% endif %}
+                                {% if job.status == '0' %}
+                                    <button disabled class="btn btn-primary float-right mr-2">
+                                        Edit
+                                    </button>
+                                {% elif job.status == '7' %}
+                                    <button disabled class="btn btn-primary float-right mr-2">
+                                        Edit
+                                    </button>
+                                {% else %}
+                                        <form action="/jobs/edit_job/?job_id={{ job.positioncode }}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit"  class="btn btn-primary float-right mr-2"
+                                                onclick="location.href='create-job.html'">
+                                            Edit Job
+                                        </button>
+                                        </form>
+                                {% endif %}
+							</div>
+						</div>
+						<div class="card mb-4 dplist" style="margin-top: 10px;">
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-bordered" width="100%" cellspacing="0">
+										<thead>
+											<tr>
+												<th>Name</th>
+												<th>Email</th>
+												<th>Ratings</th>
+												<th>Interviewer</th>
+												<th>DueDate </th>
+												<th>Reviewed By</th>
+												<th>Status</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody>
+                                        {% for applicant in job.applicant %}
+                                            <tr>
+												<td>{{ applicant.fkcandidate.name }}</td>
+												<td><a href="#">{{ applicant.fkcandidate.email }}</a></td>
+												<td> <i class="fa fa-star text-success" aria-hidden="true"></i>
+                                                    <i class="fa fa-star text-success" aria-hidden="true"></i>
+                                                    <i class="fa fa-star text-success" aria-hidden="true"></i>
+                                                    <i class="fa fa-star text-success" aria-hidden="true"></i>
+                                                    <i class="fa fa-star default-star" aria-hidden="true"></i>
+                                                </td>
+												<td>Manish Gupta</td>
+												<td>23/06/2020</td>
+												<td>4</td>
+												<td class="text-success">Complete</td>
+												{% if job.status == '7' %}
+                                                    <td>
+                                                        <button disabled type="button" class="btn btn-light" onclick="location.href='candidate-interview.html'"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                                        <button disabled type="button" class="btn btn-light" onclick="location.href='candidate-interview.html'"><i class="fas fa-tools"></i></button>
+                                                        <button disabled type="button" class="btn btn-light" data-toggle="modal" data-target="#archiveingcan"><i class="far fa-folder-open"></i></button>
+                                                        <button disabled type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+												    </td>
+                                                {% else %}
+                                                    <td>
+                                                        <button type="button" class="btn btn-light" onclick="location.href='candidate-interview.html'"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                                        <button type="button" class="btn btn-light" onclick="location.href='candidate-interview.html'"><i class="fas fa-tools"></i></button>
+                                                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#archiveingcan"><i class="far fa-folder-open"></i></button>
+                                                        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+												    </td>
+                                                {% endif %}
+											</tr>
+                                        {% endfor %}
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="row thviewjd" style="margin-top: 10px;">
+							{%  for applicant in job.applicant %}
+                                <div class="canthumb col-xl-3 col-md-6">
+                                    <div class="card mb-4 my-card-th text-center completed">
+                                        <div class="profile-th"><img src="{% static 'assets/img/profile.jpg' %}" alt="" /></div>
+                                        <div class="play-btn-th">
+                                            <button type="button" class="btn btn-primary" onclick="location.href='candidate-interview.html'"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                        </div>
+                                        <div class="pro-name-th">{{ applicant.fkcandidate.name }}</div>
+                                        <div class="pro-email-th"><a href="#">{{ applicant.fkcandidate.email }}</a></div>
+                                        <div class="ratings-th"> <i class="fa fa-star text-success" aria-hidden="true"></i> <i class="fa fa-star text-success" aria-hidden="true"></i> <i class="fa fa-star text-success" aria-hidden="true"></i> <i class="fa fa-star text-success" aria-hidden="true"></i> <i class="fa fa-star default-star" aria-hidden="true"></i> </div>
+                                        <div class="status-th text-success">{{ applicant.status }}</div>
+                                        <div class="department">{{ applicant.fkjobposition.jobtitle }}</div>
+                                        <div class="col-12 th-text"><strong>Reviewed By</strong><span>4</span></div>
+                                        <div class="col-12 th-text"><strong>Closing On</strong>
+                                            <span>{{ applicant.fkjobposition.closedate|date }}</span>
+                                        </div>
+                                        <div class="action-th">
+                                            {% if job.status == '7' %}
+                                                <button type="button" class="actionplay btn btn-light" onclick="location.href='candidate-interview.html'"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                                <button disabled type="button" class="btn btn-light" onclick="location.href='candidate-interview.html'"><i class="fas fa-tools"></i></button>
+                                                <button disabled type="button" class="btn btn-light" data-toggle="modal" data-target="#archiveingcan"><i class="far fa-folder-open"></i></button>
+                                                <button disabled type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+                                            {% else %}
+                                                <button type="button" class="actionplay btn btn-light" onclick="location.href='candidate-interview.html'"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-light" onclick="location.href='candidate-interview.html'"><i class="fas fa-tools"></i></button>
+                                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#archiveingcan"><i class="far fa-folder-open"></i></button>
+                                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+							    </div>
+                            {% endfor %}
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3">
+					<div class="card mb-3">
+						<div class="card-header"> <i class="float-left mr-2 fa fa-rss" aria-hidden="true"></i>
+							<h4>UI Designer Feeds</h4> <span class="card-header-notification">5 new</span> </div>
+						<div class="feed">
+							<a href="#"><img src="{% static 'assets/img/Nadine-Richardson-profile-square.jpg' %}" alt=""></a>
+							<div class="feed-content"><a href="#"><strong>Monica Smith</strong> </a>joined as <a href="#">UI Designer</a>.
+								<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+						<div class="feed">
+							<a href="#"><img src="{% static 'assets/img/opulent-profile-square-05.jpg' %}" alt=""></a>
+							<div class="feed-content"><a href="#"><strong>Monica Smith</strong> </a>applied for <a href="#">UI Designer</a>.
+								<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+						<div class="feed">
+							<a href="#"><img src="{%  static 'assets/img/profile.jpg' %}" alt=""></a>
+							<div class="feed-content"><a href="#"><strong>Monica Smith</strong> </a>given interview for <a href="#">UI Designer</a>.
+								<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+						<div class="feed">
+							<a href="#"><img src="{% static 'assets/img/profile_square3.jpg' %}" alt=""></a>
+							<div class="feed-content"><a href="#"><strong>Monica Smith</strong> </a>created interview for <a href="#">UI Designer</a>.
+								<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+						<div class="feed">
+							<a href="#"><img src="{%  static 'assets/img/profile_square3.jpg' %}" alt=""></a>
+							<div class="feed-content"><a href="#"><strong>Monica Smith</strong> </a>given interview for <a href="#">UI Designer</a>.
+								<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+						<div class="feed" style="border: 0;">
+							<a href="#"><img src="{%  static 'assets/img/profile_square3.jpg' %}" alt=""></a>
+							<div class="feed-content"><a href="#"><strong>Monica Smith</strong> </a>given interview for <a href="#">UI Designer</a>.
+								<br> <small>Today 5:60 pm - 12.06.2014</small></div> <span class="feed-time">5 mins ago</span> </div>
+					</div>
+					<div style="width: 100%; margin-bottom: 10px; display: block; float: left;">
+						<div class="dropdown float-right">
+							<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> Department </button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(-49px, 35px, 0px); top: 0px; right: 0px; will-change: transform;"> <a class="dropdown-item" href="#">Department 1</a> <a class="dropdown-item" href="#">Department 2</a> <a class="dropdown-item" href="#">Department 3</a> </div>
+						</div>
+					</div>
+					<div class="card mb-3">
+						<div class="card-header"><i class="float-left mr-2 fa fa-user-plus" aria-hidden="true"></i>
+							<h4 class="card-title">Candidates Shortlisted</h4></div>
+						<div class="card-body">
+                            {%  for applicant in job.applicant %}
+                                {% if applicant.status == 'SHORT_LISTED' %}
+                                    <a href="/candidate/candidate_detail/?cnd_id={{applicant.fkcandidate.id}}" class="members">
+                                        <img src="{% static applicant.fkcandidate.candidate_image %}" alt="">
+                                        <span>{{ applicant.fkcandidate.name }}</span>
+                                        <small>{{ applicant.fkcandidate.current_position}}</small>
+                                    </a>
+                                {% else %}
+                                {% endif %}
+                            {% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static "js/view-changer2.js" %}"></script>
+{% endblock %}

@@ -1,0 +1,17 @@
+<div id="slots_data" class="slots">
+    {% for slot in slots %}
+        {% if slot.booked == 1 %}
+            <div id="{{ slot.id }}" class="slot">
+                <span class="float-left">{{ slot.starttime }} - {{ slot.endtime }} </span>
+                <span class="float-right">Not Available</span>
+            </div>
+        {% else %}
+            <div id="{{ slot.id }}" class="slot vacant" data-toggle="modal" data-target="#exampleModalCenter">
+                <span id="{{ slot.id }}" class="float-left">
+                    {{ slot.starttime }} - {{ slot.endtime }}
+                </span>
+                <span class="float-right text-success">Available</span>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

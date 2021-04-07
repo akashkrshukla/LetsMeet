@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+{% extends "ixmeetbase.html" %}
+{% load static %}
+{% block content %}
+    <div class="modal fade" id="thanksfinalsub" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Sending Successful!</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+			</div>
+			<div class="modal-body"> Your Invitation for selected candidates is successfully sent. </div>
+			<div class="modal-footer"> <a href="interview.html" class="btn btn-primary">Ok</a> </div>
+		</div>
+	</div>
+    </div>
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	<div class="modal-dialog" role="document" style="max-width: fit-content;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Job Invitation Preview</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+			</div>
+			<div class="modal-body"> <img src="assets/emailer/BusinessProduct.png" width="600px" alt="" /> </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Save</button>
+				<button type="button" class="btn btn-primary">Send</button>
+			</div>
+		</div>
+	</div>
+    </div>
+    <div class="container-fluid">
+	<div class="row mb-2">
+		<div class="col-xl-6">
+			<h4 style="margin-top: 8px;float: left;">Candidate Invitation :: UI Designer</h4></div>
+		<div class="col-xl-6">
+			<!-- Modal -->
+			<div class="modal fade" id="interviewlink" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLongTitle">Candidate Sharing</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+						</div>
+						<div class="modal-body"> http://dev.intellbill.com:9000/vat/adityabansal/ </div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Copy</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal -->
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xl-6">
+			<div class="card mb-3">
+				<div class="card-body">
+					<div class="form-group mb-1">
+						<label for="companyTextbox">Invitation For:</label>
+						<select class="form-control">
+							<option>Oneway</option>
+							<option>Live</option>
+						</select>
+					</div>
+					<div class="form-group mb-1">
+						<label for="companyTextbox">Email Address</label>
+						<input type="text" class="form-control" id="companyTextbox" aria-describedby="companyhelp" placeholder="Email Addresses"> </div>
+					<div class="custom-file answer mt-3">
+						<input type="file" class="custom-file-input" id="customFile">
+						<label class="custom-file-label" for="customFile">Choose CSV file</label>
+					</div>
+					<div class="form-group">
+						<label>
+							<input class="coupon_question" type="checkbox"> Send Bulk Invitation</label>
+						<button class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalCenter">Existing Candidates</button>
+						<!-- Modal -->
+						<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLongTitle">Add Existing Candidate for Invitation</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+									</div>
+									<div class="modal-body">
+										<input type="text" class="form-control">
+										<div class="can-list">
+											<div class="form-group">
+												<label>
+													<input type="checkbox"> Aditya Bansal </label>
+											</div>
+											<div class="form-group">
+												<label>
+													<input type="checkbox"> Anam Dorsey </label>
+											</div>
+											<div class="form-group">
+												<label>
+													<input type="checkbox"> Arla Mills </label>
+											</div>
+											<div class="form-group">
+												<label>
+													<input type="checkbox"> Amarah Rowland </label>
+											</div>
+											<div class="form-group">
+												<label>
+													<input type="checkbox"> Bobbi Ahmad </label>
+											</div>
+											<div class="form-group">
+												<label>
+													<input type="checkbox"> Juniper Mac </label>
+											</div>
+											<div class="form-group">
+												<label>
+													<input type="checkbox"> Dougie Watson </label>
+											</div>
+											<div class="form-group">
+												<label>
+													<input type="checkbox"> Faith Mcphee </label>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary">Select All</button>
+										<button type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Modal -->
+					</div>
+					<div class="form-group">
+						<label for="companyTextbox">Invitation Title</label>
+						<input type="text" class="form-control" aria-describedby="companyhelp" placeholder="Invitation for you to record your 1-way/Live Interview for UI developer"> </div>
+					<div class="form-group">
+						<div class="row">
+							<div class="col-xl-6">
+								<label for="companyTextbox">Start Date</label>
+								<input type="date" class="form-control" placeholder="Start Date"> </div>
+							<div class="col-xl-6">
+								<label for="companyTextbox">End Date</label>
+								<input type="date" class="form-control" placeholder="End Date"> </div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="companyWebsite">Addition Information</label>
+						<textarea name="editor" class="form-control" id="editor"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </textarea>
+					</div>
+				</div>
+				<form> </form>
+			</div>
+			<div class="row mb-3">
+				<div class="col-xl-6">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Preview</button>
+				</div>
+				<div class="col-xl-6">
+					<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#thanksfinalsub">Send</button>
+					<button class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#interviewlink">Share</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-3">
+			<div class="card mb-3">
+				<div class="card-header"> Choose Template </div>
+				<div class="card-body">
+					<form class="template-selector">
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_0"> <img src="assets/templates/1.jpg" alt="" /><span>Template 1</span></label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_1"> <img src="assets/templates/2.jpg" alt="" /><span>Template 2</span></label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_2"> <img src="assets/templates/3.jpg" alt="" /><span>Template 3</span></label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_3"> <img src="assets/templates/4.jpg" alt="" /><span>Template 4</span></label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_4"> <img src="assets/templates/5.jpg" alt="" /><span>Template 5</span></label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_5"> <img src="assets/templates/6.jpg" alt="" /><span>Template 6</span></label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_5"> <img src="assets/templates/7.jpg" alt="" /><span>Template 7</span></label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_5"> <img src="assets/templates/8.jpg" alt="" /><span>Template 8</span> </label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_5"> <img src="assets/templates/8.jpg" alt="" /><span>Template 9</span> </label>
+						<br>
+						<label>
+							<input type="radio" name="RadioGroup1" value="radio" id="RadioGroup1_5"> <img src="assets/templates/8.jpg" alt="" /><span>Template 10</span> </label>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xl-12">
+					<button type="button" class="btn btn-primary float-right">Apply</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-3">
+			<div class="card">
+				<div class="card-header"> Supporting Files </div>
+				<div class="card-body spf">
+					<a href="#"><img src="assets/templates/1.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/2.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/3.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/4.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/5.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/6.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/7.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/8.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/1.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/2.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/3.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/4.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/5.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/6.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/7.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/8.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/1.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/2.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/3.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/4.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/5.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/6.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/7.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/8.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/8.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/1.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/2.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/3.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/4.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/5.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/6.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/7.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/8.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/8.jpg" alt="" /></a>
+					<a href="#"><img src="assets/templates/1.jpg" alt="" /></a>
+				</div>
+				<div class="card-footer">
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="inputGroupFile01">
+						<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+            $( function() {
+            $( "#startdate" ).datepicker();
+            $( "#enddate" ).datepicker();
+          } );
+          $(document).ready(function () {
+            $('#editor').jqxEditor({
+                height: "400px",
+                width: getWidth('editor')
+            });
+        });
+    </script>
+{% endblock %}

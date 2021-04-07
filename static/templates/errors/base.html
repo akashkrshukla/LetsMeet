@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load i18n static %}
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    <title>Intellworx::Candidate</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/ssd.css' %}" rel="stylesheet" type="text/css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <script src="https://use.fontawesome.com/275b5087ec.js"></script>
+    <script src="https://kit.fontawesome.com/aa8229b715.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
+

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+{% extends "ixmeetbase.html" %}
+{% load static %}
+{% block content %}
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Record Your Question</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+			</div>
+			<div class="modal-body"> <img src="assets/img/interviewer.jpg" width="100%" alt="" /> </div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Play</button>
+				<button type="button" class="btn btn-primary">Upload</button>
+			</div>
+		</div>
+	</div>
+
+
+    </div>
+    <div class="container-fluid">
+	<div class="row mb-2">
+		<div class="col-xl-6">
+			<h4 style="margin-top: 8px;">Create Interview</h4></div>
+		<div class="col-xl-6">
+			<a class="btn btn-primary dropdown-toggle float-right" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fas fa-plus-circle"></i>&nbsp;&nbsp;&nbsp; Create </a>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuLink"> <a class="dropdown-item" href="create-job.html">Job</a> <a class="dropdown-item" href="create-interview.html">Interview</a> <a class="dropdown-item" href="tasks.html">Task</a> </div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xl-6">
+			<div class="card bg-primary text-white">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="intv-detail">
+							<h5>UI Developer</h5>
+							<br>
+							<h1>6<small>Questions</small></h1> </div>
+					</div>
+					<div class="col-md-6">
+						<div class="intv-time"> Total Interview Time
+							<h1>27:15</h1> <small>Minutes</small> </div>
+					</div>
+				</div>
+				<div class="qp-area bg-white text-black-50">
+					<div class="ad-que">
+						<h4>Add a Question</h4>
+						<form>
+							<div class="input-group mb-2">
+								<input type="text" class="form-control" id="quetx" placeholder="Type your question here" aria-label="Type your question here" aria-describedby="basic-addon2">
+								<div class="input-group-append">
+									<button class="btn btn-primary" title="Record Your Question" type="button" style="border-radius: 50%"><i class="fas fa-video"></i></button>
+								</div>
+							</div>
+							<div class="que-setting row">
+								<div class="col-xl-3 my-range-selector">
+									<label>Thinking Time</label> <span><strong id="tktiming" class="text-dark">5</strong>secs</span>
+									<input type="range" id="thinktime" min="5" max="60" value="0"> </div>
+								<div class="col-xl-3 my-range-selector">
+									<label>Retakes Allowed</label> <span><strong id="nretaketxt" class="text-dark">1</strong>retakes</span>
+									<input type="range" id="nretake" min="1" max="5" value="0"> </div>
+								<div class="col-xl-3 my-range-selector">
+									<label>Answer Time</label> <span><strong id="anstimetxt" class="text-dark">30</strong>secs</span>
+									<input type="range" id="anstime" min="30" max="120" value="0"> </div>
+								<div class="col-xl-3">
+									<label>
+										<input class="float-right" type="checkbox">Apply to all</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xl-8"> </div>
+								<div class="col-xl-4">
+									<button type="button" id="adqbtn" class="btn btn-primary float-right">Add Question</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="dragndroparea">
+								<ol id="quesarea">
+									<li class="drop-area"><span class="dragelement">Tell me about yourself?
+															<a href="javascript:void(0);" class="closebtn"><i class="fas fa-times"></i></a>
+															<a href="#" class="mr-3"><i class="fas fa-film" style="font-size: 1.2rem;"></i></a>
+															<a href="#" title="Answer Time"><img src="assets/icons/timer-round-clock-1.png" alt=""/><span class="badge badge-pill badge-warning">90</span></a>
+										<a href="#" title="Retakes"><img src="assets/icons/asset-47.png" alt="" /><span class="badge badge-pill badge-warning">2</span></a>
+										<a href="#" title="Thinking Time"><img src="assets/icons/asset-51.png" alt="" /><span class="badge badge-pill badge-warning">30</span></a>
+										<input type="checkbox"> </span>
+									</li>
+									<li class="drop-area"><span class="dragelement">What are your biggest weaknesses?
+															<a href="javascript:void(0);" class="closebtn"><i class="fas fa-times"></i></a>
+															<a href="#" class="mr-3"><i class="fas fa-film" style="font-size: 1.2rem;"></i></a>
+															<a href="#" title="Answer Time"><img src="assets/icons/timer-round-clock-1.png" alt=""/><span class="badge badge-pill badge-warning">90</span></a>
+										<a href="#" title="Retakes"><img src="assets/icons/asset-47.png" alt="" /><span class="badge badge-pill badge-warning">2</span></a>
+										<a href="#" title="Thinking Time"><img src="assets/icons/asset-51.png" alt="" /><span class="badge badge-pill badge-warning">30</span></a>
+										<input type="checkbox"> </span>
+									</li>
+									<li class="drop-area"><span class="dragelement">What are your biggest strengths?
+															<a href="javascript:void(0);" class="closebtn"><i class="fas fa-times"></i></a>
+															<a href="#" class="mr-3"><i class="fas fa-film" style="font-size: 1.2rem;"></i></a>
+															<a href="#" title="Answer Time"><img src="assets/icons/timer-round-clock-1.png" alt=""/><span class="badge badge-pill badge-warning">90</span></a>
+										<a href="#" title="Retakes"><img src="assets/icons/asset-47.png" alt="" /><span class="badge badge-pill badge-warning">2</span></a>
+										<a href="#" title="Thinking Time"><img src="assets/icons/asset-51.png" alt="" /><span class="badge badge-pill badge-warning">30</span></a>
+										<input type="checkbox"> </span>
+									</li>
+									<li class="drop-area"><span class="dragelement">Where do you see yourself in five years?
+															<a href="javascript:void(0);" class="closebtn"><i class="fas fa-times"></i></a>
+															<a href="#" class="mr-3"><i class="fas fa-film" style="font-size: 1.2rem;"></i></a>
+															<a href="#" title="Answer Time"><img src="assets/icons/timer-round-clock-1.png" alt=""/><span class="badge badge-pill badge-warning">90</span></a>
+										<a href="#" title="Retakes"><img src="assets/icons/asset-47.png" alt="" /><span class="badge badge-pill badge-warning">2</span></a>
+										<a href="#" title="Thinking Time"><img src="assets/icons/asset-51.png" alt="" /><span class="badge badge-pill badge-warning">30</span></a>
+										<input type="checkbox"> </span>
+									</li>
+									<li class="drop-area"><span class="dragelement">Out of all candidates, why should we hire you?
+															<a href="javascript:void(0);" class="closebtn"><i class="fas fa-times"></i></a>
+															<a href="#" class="mr-3"><i class="fas fa-film" style="font-size: 1.2rem;"></i></a>
+															<a href="#" title="Answer Time"><img src="assets/icons/timer-round-clock-1.png" alt=""/><span class="badge badge-pill badge-warning">90</span></a>
+										<a href="#" title="Retakes"><img src="assets/icons/asset-47.png" alt="" /><span class="badge badge-pill badge-warning">2</span></a>
+										<a href="#" title="Thinking Time"><img src="assets/icons/asset-51.png" alt="" /><span class="badge badge-pill badge-warning">30</span></a>
+										<input type="checkbox"> </span>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+					<div class="que-btn-holder">
+{#                        go to /jobs/save_interview/#}
+						<button  type="button" class="btn btn-primary float-right">Save</button>
+					</div>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col-xl-12">
+					<button type="button" class="btn btn-primary float-right" onclick="location.href='/jobs/candidate_invitation'">Save & Post</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-3">
+			<div class="card bg-white text-black-50" style="min-height: 743px;">
+				<div class="card-header"><strong>Question Bank</strong></div>
+				<div class="m-2">
+					<!-- Search form -->
+					<div class="input-group mb-2">
+						<input type="text" class="form-control" placeholder="Search Question" aria-label="Recipient's username" aria-describedby="basic-addon2">
+						<div class="input-group-append">
+							<button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+						</div>
+					</div>
+				</div>
+				<div class="m-2">
+					<div class="container-fluid h-100">
+						<div class="row h-100">
+							<ul class="nav nav-pills flex-column qb">
+								<li class="nav-item"><a class="nav-link" href="#">What are your biggest weaknesses ?</a></li>
+								<li class="nav-item"> <a class="nav-link collapsed" href="#submenu1" data-toggle="collapse" data-target="#submenu1">Adminstration</a>
+									<div class="collapse" id="submenu1" aria-expanded="false">
+										<ul class="flex-column pl-2 nav">
+											<li class="nav-item"><a class="nav-link py-0" href="">What are your biggest weaknesses ?</a></li>
+											<li class="nav-item"> <a class="nav-link collapsed py-0" href="#submenu1sub1" data-toggle="collapse" data-target="#submenu1sub1">What are your biggest weaknesses ?</a>
+												<div class="collapse small" id="submenu1sub1" aria-expanded="false">
+													<ul class="flex-column nav pl-4">
+														<li class="nav-item"> <a class="nav-link p-0" href="">
+																					Where do you see yourself in five years?
+																				</a> </li>
+														<li class="nav-item"> <a class="nav-link p-0" href="">
+																					Where do you see yourself in five years?
+																				</a> </li>
+														<li class="nav-item"> <a class="nav-link p-0" href="">
+																					Where do you see yourself in five years?
+																				</a> </li>
+														<li class="nav-item"> <a class="nav-link p-0" href="">
+																					Where do you see yourself in five years?
+																				</a> </li>
+													</ul>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="#">Where do you see yourself in five years?</a></li>
+								<li class="nav-item"><a class="nav-link" href="#">Where do you see yourself in five years?</a></li>
+								<li class="nav-item"><a class="nav-link" href="#">Where do you see yourself in five years?</a></li>
+								<li class="nav-item"><a class="nav-link" href="#">Where do you see yourself in five years?</a></li>
+								<li class="nav-item"><a class="nav-link" href="#">Where do you see yourself in five years?</a></li>
+								<li class="nav-item"><a class="nav-link" href="#">Where do you see yourself in five years?</a></li>
+								<li class="nav-item"><a class="nav-link" href="#">Where do you see yourself in five years?</a></li>
+								<li class="nav-item"><a class="nav-link" href="#">Where do you see yourself in five years?</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-3">
+			<div class="card mb-3 interview-upd">
+				<div class="card-header"> <i class="float-left mr-2 fa fa-rss" aria-hidden="true"></i>
+					<h4>Interviews Created by me</h4> <span class="card-header-notification">4 new</span> </div>
+				<div class="feedbox-min" style="min-height: 699px; ">
+					<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+						<div class="feed-content"><strong>UI Developer</strong> interview created.
+							<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+					<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+						<div class="feed-content"><strong>UI Developer</strong> interview created.
+							<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+					<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+						<div class="feed-content"><strong>UI Developer</strong> interview created.
+							<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+					<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+						<div class="feed-content"><strong>UI Developer</strong> interview created.
+							<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+					<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+						<div class="feed-content"><strong>UI Developer</strong> interview created.
+							<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+					<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+						<div class="feed-content"><strong>UI Developer</strong> interview created.
+							<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+					<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+						<div class="feed-content"><strong>UI Developer</strong> interview created.
+							<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+					<div class="feed to-do"> <a href="#" class="jf-icons btn-primary">UI</a>
+						<div class="feed-content"><strong>UI Developer</strong> interview created.
+							<br> <small>Today 5:60 pm - 12.06.2014</small></div> <a href="#" class="badge badge-info" style="color: #fff;">25 Applied</a> <a href="#" class="badge badge-success" style="color: #fff;"> 5 Shortlisted</a> <a href="#" class="badge badge-primary" style="color: #fff;"> Use this</a> </div>
+				</div>
+				<!---->
+			</div>
+		</div>
+	</div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+
+{% endblock %}

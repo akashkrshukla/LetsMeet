@@ -1,0 +1,118 @@
+{% load static %}
+{% block content %}
+<body>
+	<header></header>
+    {% include 'ixmeet_candidatebase.html' %}
+    <div class="container p-0">
+		  <article>
+				<div id="tabs">
+				  <ul>
+					<li><a href="#tabs-1">My Jobs</a></li>
+					<li><a href="#tabs-2">My Interview Calendar</a></li>
+				  </ul>
+				  <div id="tabs-1">
+					<table class="table table-bordered text-center">
+                        <thead class="table-dark">
+							<tr>
+							  <th scope="col">#</th>
+							  <th scope="col">Job Title</th>
+							  <th scope="col">Client</th>
+							  <th scope="col">Interview</th>
+							  <th scope="col">Start Date</th>
+							  <th scope="col">End Date</th>
+							  <th scope="col">Link</th>
+							</tr>
+                        </thead>
+
+					  <tbody>
+                      {% for interview in interviews %}
+                        	<tr>
+                              <td>{{ forloop.counter }}</td>
+                              <td>{{ interview.fkjobapplication.fkjobposition.jobtitle }}</td>
+                              <td>{{ interview.fkjobapplication.fkjobposition.fkcustomer.name}}</td>
+                                {% if interview.interviewtype == '1' %}
+                                    <td>Oneway</td>
+                                {% else %}
+                                    <td>Live</td>
+                                {% endif %}
+                              <td>{{ interview.fkjobapplication.fkjobposition.posteddate }}</td>
+                              <td>{{ interview.fkjobapplication.fkjobposition.closedate }}</td>
+                              {% if interview.interviewtype == '1' %}
+                                    <td class="text-center">
+                                        <a href="{% url 'record_interview_video' %}" class="btn btn-dark">Give Interview</a>
+                                    </td>
+                              {% else %}
+                              <td class="text-center">
+                                  <a href="{% url 'schedule_applicant_interview' %}?int_id={{ interview.id }}" class="btn btn-dark">Schedule</a>
+                              </td>
+                              {% endif %}
+
+                            </tr>
+                      {% endfor %}
+					  </tbody>
+					</table>
+
+				  </div>
+				  <div id="tabs-2" style="height: 850px;">
+					<div id="scheduler"></div>
+				  </div>
+				</div>
+		  </article>
+		</div>
+</body>
+
+{% endblock %}
+{% block extrajs %}
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	<script src="js/star-rating.js"></script>
+	<script>
+		$(document).ready(function(){
+		  $('.toggle').click(function(){
+			$('.sidebar-contact').toggleClass('active')
+			$('.toggle').toggleClass('active')
+		  })
+		})
+		$("#review").click(function(){
+		$("#review").addClass('activetab');
+		$("#comment").removeClass('activetab');
+		$(".tab-content-2").hide();
+		$(".tab-content-1").show();
+	})
+	$("#comment").click(function(){
+	$("#comment").addClass('activetab');
+	$("#review").removeClass('activetab');
+		$(".tab-content-1").hide();
+		$(".tab-content-2").show();
+	})
+	</script>
+{% endblock %}
+{% block extracss %}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="  crossorigin="anonymous"></script>
+		<script src="https://use.fontawesome.com/275b5087ec.js"></script>
+		<script src="https://kit.fontawesome.com/aa8229b715.js" crossorigin="anonymous"></script>
+	    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+	  $( function() {
+		$( "#tabs" ).tabs();
+	  } );
+	  </script>
+		<script type="text/javascript" src="{% static 'js/task/jqxcore.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxbuttons.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxscrollbar.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxdata.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxdate.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxscheduler.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxscheduler.api.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxdatetimeinput.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxcalendar.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxtooltip.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxwindow.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxcheckbox.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxlistbox.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxdropdownlist.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxnumberinput.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxradiobutton.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/jqxinput.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/task/globalize.js' %}"></script>
+{% endblock %}
+

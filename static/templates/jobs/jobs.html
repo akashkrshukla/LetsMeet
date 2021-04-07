@@ -1,0 +1,478 @@
+{% extends "ixmeetbase.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+	<div class="row mb-2">
+		<div class="col-xl-6">
+			<h4 style="margin-top: 8px;">Jobs</h4></div>
+		<div class="col-xl-6"></div>
+	</div>
+	<div class="row">
+		<div class="col-xl-3 col-sm-6 col-12">
+			<div class="info-box bg-white"> <span class="info-box-icon"><i class="fa fa-bookmark-o" aria-hidden="true"></i></span>
+				<div class="info-box-content"> <span class="info-box-text">Total Jobs</span>
+                    <span class="info-box-number">{{ total_jobs }}</span>
+					 <div class="progress">
+						<div class="progress-bar" style="width: 70%"></div>
+					</div> <span class="progress-description">
+                        {{ rel_change_total_jobs|floatformat:2 }} %
+                        {% if rel_change_total_jobs >= 0 %}
+                        Increase
+                        {% else %}
+                        Decrease
+                        {% endif %}
+                        in 30 Days
+                </span> </div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+		<!-- /.col -->
+		<div class="col-xl-3 col-sm-6 col-12">
+			<div class="info-box bg-white"> <span class="info-box-icon"><i class="fas fa-history" aria-hidden="true"></i></span>
+				<div class="info-box-content">
+                    <span class="info-box-text">Pending</span> <span class="info-box-number">
+                        {{ pending_jobs|floatformat:2 }}
+                    </span>
+					<div class="progress">
+						<div class="progress-bar" style="width: 70%"></div>
+					</div> <span class="progress-description">
+                        {{ rel_change_pending_jobs|floatformat:2}} %
+                        {% if rel_change_pending_jobs >= 0 %}
+                        Increase
+                        {% else %}
+                        Decrease
+                        {% endif %} in 30 Days
+
+
+                </span> </div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+		<!-- /.col -->
+		<div class="col-xl-3 col-sm-6 col-12">
+			<div class="info-box bg-white"> <span class="info-box-icon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
+				<div class="info-box-content"> <span class="info-box-text">Ending Soon</span>
+                    <span class="info-box-number">
+                        {{ ending_soon|floatformat:2 }}
+                    </span>
+					<div class="progress">
+						<div class="progress-bar" style="width: 70%"></div>
+					</div> <span class="progress-description">
+                        {{ rel_change_ending_soon|floatformat:2 }} %
+                        {% if rel_change_ending_soon >= 0 %}
+                        Increase
+                        {% else %}
+                        Decrease
+                        {% endif %}
+                         in 30 Days
+                </span> </div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+		<!-- /.col -->
+		<div class="col-xl-3 col-sm-6 col-12">
+			<div class="info-box bg-white"> <span class="info-box-icon"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i></span>
+				<div class="info-box-content"> <span class="info-box-text">Unresponsive</span>
+                    <span class="info-box-number">{{ unresponsive_jobs }}</span>
+					<div class="progress">
+						<div class="progress-bar" style="width: 70%"></div>
+					</div> <span class="progress-description">
+                        {{ rel_change_unresponsive|floatformat:2 }} %
+                        {% if rel_change_unresponsive >= 0 %}
+                        Increase
+                        {% else %}
+                        Decrease
+                        {% endif %}
+                         in 30 Days
+                </span> </div>
+				<!-- /.info-box-content -->
+			</div>
+			<!-- /.info-box -->
+		</div>
+		<!-- /.col -->
+	</div>
+	<div class="row">
+		<div class="col-xl-9">
+			<div class="card mb-4">
+				<div class="card-header"> <i class="fas fa-chart-area mr-1"></i> Job Details </div>
+				<div class="row">
+					<div class="col-xl-4">
+						<div class="graph-details h-100">
+							<div class="graph-data">
+								<div class="d-block" style="text-align: center;">
+									<h1>{{ total_jobs }}</h1> <small>Jobs</small> </div>
+								<div class="row all-details">
+									<div class="col-xl-6" onclick="location.href='#'">Openings
+										<br>
+										<h3 style="color:#0275d8">{{ tot_openings.openings__sum }}</h3> </div>
+									<div class="col-xl-6" onclick="location.href='#'">Applicants
+										<br>
+										<h3 style="color:#20b2aa">{{ applicant_count }}</h3></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-8">
+						<div class="card-body">
+							<canvas id="myBarChart" width="100%" height="48"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xl-12">
+					<button type="submit" class="btn btn-primary" onclick="location.href='/jobs/create_job'"> + Create Job </button>
+					<div class="float-right">
+						<div class="dropdown">
+							<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Department </button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% for dept in departments %}
+                                    <a class="dropdown-item" href="#">{{ dept.name }}</a>
+                                {% endfor %}
+                            </div>
+							<button type="button" class="btn btn-light" id="thview">
+                                <i class="fa fa-th" aria-hidden="true"></i>
+                            </button>
+							<button type="button" class="btn btn-light" id="gridview">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                            </button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-xl-12">
+					<div class="card mb-4 tableview">
+						<div class="card-header">
+							<h4>All Jobs</h4>
+                            <div class="form-check float-right">
+                                <label class="form-check-label mr-4" for="showArchived" >Archived Jobs</label>
+                                {% if archived == 1 %}
+                                        <input onchange='changeArchived(this);' id="showArchived" type="checkbox" checked class="form-check-input">
+                                {% else %}
+                                        <input onchange='changeArchived(this);' id="showArchived" type="checkbox" class="form-check-input">
+                                {% endif %}
+                            </div>
+                        </div>
+						<div class="card-body mytablest">
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+									<thead class="table-dark">
+										<tr>
+											<th>Job Title</th>
+											<th>Department</th>
+											<th>Openings</th>
+											<th>Location</th>
+											<th>Description</th>
+											<th>Created by</th>
+											<th>Created Date</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+                                    {% for job in jobs_list %}
+                                        <tr>
+											<td><a href="/jobs/applicant_list/?job_id={{ job.positioncode }}">{{ job.jobtitle }}</a></td>
+											<td>{{ job.fkdepartment.name }}</td>
+											<td>{{ job.openings }}</td>
+											<td>{{ job.fkcity.cityname }}</td>
+											<td>{{ job.jobdecription}}</td>
+											<td>{{ job.created_by }}</td>
+											<td>{{ job.posteddate|date:"d-m-Y"}}</td>
+                                            {% if job.status == '0' %}
+                                                <td>
+                                                    <button type="button" class="btn btn-link text-primary" data-toggle="modal" data-target="#archive_row">
+                                                        <i class="far fa-folder-open"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-link text-black-50" disabled data-toggle="modal" data-target="#exampleModalCenter_row">
+                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                    </button>
+											    </td>
+                                            {% elif job.status == '7' %}
+                                                <td>
+                                                    <button type="button" class="btn btn-link text-black-50" disabled data-toggle="modal" data-target="#archive_row">
+                                                        <i class="far fa-folder-open"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-link text-black-50" disabled data-toggle="modal" data-target="#exampleModalCenter_row">
+                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                    </button>
+											    </td>
+                                            {% else %}
+                                                <td>
+                                                    <button type="button" class="btn btn-link text-primary" data-toggle="modal" data-target="#archive_row">
+                                                        <i class="far fa-folder-open"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-link text-primary" data-toggle="modal" data-target="#exampleModalCenter_row">
+                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                    </button>
+											    </td>
+                                            {% endif %}
+										</tr>
+                                        <!--Archive Modal-->
+                                        <div class="modal fade" id="archive_row" a aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Archive?</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure to archive this job?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                        <form action="/jobs/archive_job/?job_id={{ job.positioncode }}" method="post">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="btn btn-primary" >Ok</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter_row" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Assign Job to recruiter </h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="text" class="form-control">
+                                                        <div class="can-list">
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <input type="checkbox"> Aditya Bansal </label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <input type="checkbox"> Anam Dorsey </label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <input type="checkbox"> Arla Mills </label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <input type="checkbox"> Amarah Rowland </label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <input type="checkbox"> Bobbi Ahmad </label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <input type="checkbox"> Juniper Mac </label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <input type="checkbox"> Dougie Watson </label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>
+                                                                    <input type="checkbox"> Faith Mcphee </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Assign</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% for job in jobs_list %}
+                    <div class="thviewjd col-xl-3 col-md-6">
+                        <div class="card mb-4 jobcard text-center completed">
+                            <div class="profile-th bg-primary"><img src="assets/icons/icons8-design-100.png" alt="" /></div>
+                            <div class="pro-name-th">{{ job.jobtitle }}</div>
+                            <div class="pro-email-th"><a href="#">{{ job.customer.email }}</a></div>
+                            <div class="location">{{ job.fkcity.cityname }}</div>
+                            <div class="jd"> <strong>Job Description:</strong> {{ job.jobdecription}}</div>
+                            <div class="department">{{ job.fkdepartment.name}}</div>
+                            <div class="col-12 th-text"><strong>Due Date</strong><span>{{ job.closedate}}</span></div>
+                            <div class="col-12 th-text"><strong>Created By</strong><span>Manish Gupta</span></div>
+                            <div class="action-th">
+                                <button type="button" class="btn btn-light" onclick="location.href='{% url 'edit_job'%}'+ '?job_id=' + {{ job.positioncode }}" >
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#archive_card">
+                                    <i class="far fa-folder-open"></i>
+                                </button>
+                                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter_card">
+                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Archive Modal-->
+                    <div class="modal fade" id="archive_card" a aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Archive?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure to archive this job?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <form action="/jobs/archive_job/?job_id={{ job.positioncode }}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary" >Ok</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter_card" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Assign Job to recruiter </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" class="form-control">
+                                                    <div class="can-list">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="checkbox"> Aditya Bansal </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="checkbox"> Anam Dorsey </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="checkbox"> Arla Mills </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="checkbox"> Amarah Rowland </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="checkbox"> Bobbi Ahmad </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="checkbox"> Juniper Mac </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="checkbox"> Dougie Watson </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>
+                                                                <input type="checkbox"> Faith Mcphee </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Assign</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                    </div>
+                {% endfor %}
+			</div>
+		</div>
+		<div class="col-xl-3">
+			<div class="card mb-3 interview-upd">
+				<div class="card-header"> <i class="float-left mr-2 fa fa-rss" aria-hidden="true"></i>
+					<h4>Job Updates</h4> <span class="card-header-notification">4 new</span>
+                </div>
+				{% include 'news_feed_list.html' %}
+			</div>
+			<div style="width: 100%; margin-bottom: 10px; display: block; float: left;">
+				<div class="dropdown float-right">
+					<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Department
+                    </button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(-49px, 35px, 0px); top: 0px; right: 0px; will-change: transform;">
+                        <a class="dropdown-item" href="#">Department 1</a>
+                        <a class="dropdown-item" href="#">Department 2</a>
+                        <a class="dropdown-item" href="#">Department 3</a>
+                    </div>
+				</div>
+			</div>
+			<div class="card mb-3">
+				<div class="card-header">
+                    <a href="{% url 'candidate' %}" class="float-left mr-2 fa fa-user-plus"aria-hidden="true"></a>
+					<h4 class="card-title">Candidates Joined</h4>
+                </div>
+				<div class="card-body">
+					{% for cnd in recent_candidate %}
+                        <a href="/candidate/candidate_detail/?cnd_id={{cnd.id}}" class="members">
+                            <img src="{%static cnd.candidate_image %}" alt="">
+                            <span>{{ cnd.name}}</span>
+                            <small>{{ cnd.current_position}}</small>
+                        </a>
+                    {% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static "js/view-changer.js" %}"></script>
+    <script type="application/javascript">
+        window.onload = function (){
+            $.ajax({
+                url: '../ajax/get_news_feed/',
+                type: 'get',
+                data: { },
+                success: function(data) {
+                    $('#feed_container').html(data);
+                },
+                failure: function(data) {
+                    console.log(data)
+                }
+                });
+
+            let barData = {
+                depts: [],
+                completed_jobs: [],
+                total_jobs: []
+            }
+            {% for item in departments %}
+                barData.depts.push("{{ item.name  }}".toString())
+                barData.total_jobs.push("{{ item.total_jobs  }}".toString())
+                barData.completed_jobs.push("{{ item.completed_jobs  }}".toString())
+            {% endfor %}
+            barData.max_job_count = {{ total_jobs }}
+            new barChart(barData);
+        }
+        function changeArchived(checkbox){
+            if(checkbox.checked == true){
+                window.location.href="/jobs/?archived=1"
+            } else {
+                window.location.href="/jobs/"
+            }
+        }
+    </script>
+{% endblock %}
